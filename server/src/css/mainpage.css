@@ -1,0 +1,148 @@
+
+div#search{
+	background-color: #08363C;
+	height: 120px;
+	position: relative;
+	top:-40px;
+	border-radius: 2px;
+}
+
+
+div#search .searchframe{
+	background-color: white;
+	height: 50px;
+	position: absolute;
+	top:25px;
+	left:40px;
+	right: 40px;
+	border-radius: 3px;
+}
+
+div#search .searchframe .searchbox{
+	border:none;
+	outline: none;
+	border-right: 1px solid;
+	font-size: 20px;
+	font-family: "Times New Roman", Times, serif;
+	position: absolute;
+	left: 10px;
+	top:10px;
+	bottom: 10px;
+	width: 70%;
+}
+
+
+.searchbutton {
+    background: #d0a44c;
+    color: #fff;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    position: absolute;
+    right: 0px;
+    width: 25%;
+    height: 100%;
+}
+.searchoption{
+	position: absolute;
+	left: 0px;
+	border:none;
+	height: 100%;
+	width: 70%;
+	outline: none;
+}
+span.searchselect{
+	position: absolute;
+	right: 0px;
+	height: 100%;
+	width:28%; 
+}
+
+
+div.gallery {
+    margin:10px 70px;
+    float: left;
+    width: 300px;
+    background-color: white;
+ 	height: 220px;
+}
+
+div.gallery:hover {
+    border: 1px solid #777;
+}
+
+div.gallery img {
+    width: 100%;
+    height: 180px;
+}
+
+a.desc {
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5em;
+    color: #00004C;
+}
+
+
+@media screen and (min-width: 1380px){
+	div#search {
+		left: 100px;
+    	width: 70%;
+	}	
+}
+
+@media screen and (min-width: 1020px) and (max-width: 1380px){
+	div#search {
+		left: 90px;
+    	width: 70%;
+	}	
+}
+
+@media screen and (min-width: 790px) and (max-width: 1020px){
+	div#search {
+		left: 80px;
+    	width: 70%;
+	}	
+	.searchbutton{
+		width: 40%;
+	}
+	.searchoption{
+		width: 60%;
+	}
+}
+
+@media screen and (min-width: 500px) and (max-width: 790px){
+	div#search {
+		left: 5px;
+    	width: 95%;
+	}	
+	.searchbutton{
+		width: 35%;
+	}
+	.searchoption{
+		width: 65%;
+	}
+	div#search .searchframe .searchbox{
+		width: 65%;
+	}
+	span.searchselect{
+		width: 32%;
+		margin-left:1px;
+	}
+}
+
+@media screen and (max-width: 500px){
+	.searchbutton{
+		width: 40%;
+	}
+	.searchoption{
+		width: 60%;
+	}
+	div#search .searchframe .searchbox{
+		width: 50%;
+	}
+	span.searchselect{
+		width: 43%;
+		margin-left:1px;
+	}
+}
+

@@ -1,0 +1,158 @@
+button.transparent {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+.searchframe{
+	background-color: white;
+	height: 50px;
+	position: absolute;
+	top: 5px;
+	left:20px;
+	border-radius: 3px;
+}
+
+.searchframe .searchbox{
+	border:none;
+	outline: none;
+	border-right: 1px solid;
+	font-size: 20px;
+	font-family: "Times New Roman", Times, serif;
+	position: absolute;
+	left: 10px;
+	top:10px;
+	bottom: 10px;
+	width: 70%;
+}
+
+.search_button {
+    background: #d0a44c;
+    color: #fff;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    position: absolute;
+    right: 0px;
+    width: 25%;
+    height: 100%;
+}
+.search_option{
+	position: absolute;
+	left: 0px;
+	border:none;
+	height: 100%;
+	width: 70%;
+	outline: none;
+}
+span.search_select{
+	position: absolute;
+	right: 0px;
+	height: 100%;
+	width:28%;
+}
+
+.nav-tabs  li.active > a,
+.nav-tabs  li.active > a:hover,
+.nav-tabs  li.active > a:focus{
+    background-color: #50A3AC; 
+    outline: none;
+    border: none; 
+} 
+
+.english{
+}
+.vietnam{
+
+}
+.side_content{
+
+}
+
+@media screen and (min-width: 1380px){
+	.searchframe{
+		right: 300px;
+	}
+}
+
+@media screen and (min-width: 1020px) and (max-width: 1380px){
+	.searchframe{
+		right: 200px;
+	}
+	.searchframe .searchbox{
+		width: 65%;
+	}
+	span.search_select{
+		width: 32%;
+		margin-left:1px;
+	}
+}
+
+@media screen and (min-width: 790px) and (max-width: 1020px){
+	.searchframe{
+		right: 100px;
+	}
+	.searchframe .searchbox{
+		width: 65%;
+	}
+	span.search_select{
+		width: 32%;
+		margin-left:1px;
+	}
+	.search_button{
+		width: 35%;
+	}
+	.search_option{
+		width: 65%;
+	}
+}
+
+@media screen and (min-width: 500px) and (max-width: 790px){
+	.searchframe{
+		right: 50px;
+	}
+	.searchframe .searchbox{
+		width: 65%;
+	}
+	span.search_select{
+		width: 32%;
+		margin-left:1px;
+	}
+	.search_button{
+		width: 35%;
+	}
+	.search_option{
+		width: 65%;
+	}
+	.side_content{
+      	display: none;
+    }
+
+}
+
+@media screen and (max-width: 500px){
+	 .side_content{
+      	display: none;
+     }
+	.searchframe{
+		right: 0px;
+		left: 0px;
+	}
+	.searchframe .searchbox{
+		width: 65%;
+	}
+	span.search_select{
+		width: 32%;
+		margin-left:1px;
+	}
+	.search_button{
+		width: 40%;
+	}
+	.search_option{
+		width: 60%;
+	}
+
+}
+

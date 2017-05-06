@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Smart Dictionary</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/mainpage.css">
+  <link rel="stylesheet" type="text/css" href="css/globalcss.css">
+  <link rel="stylesheet" type="text/css" href="css/search.css">
+  <link rel="stylesheet" type="text/css" href="css/wordlist.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="js/word_list.js"></script>
+  <style>
+
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px;}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+  </style>
+
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="mainpage.html">Smart Dictionary</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active">
+          <a href="mainpage.html" class="english">Home</a>
+          <a href="mainpage.html" class="vietnam">Trang Chủ</a>
+        </li>
+        <li>
+          <a href="#" class="english">Sentence Parsing</a>
+          <a href="#" class="vietnam">Dịch câu</a>
+        </li>
+        <li>
+          <a href="#" class="english">Word Lists & Quiz</a>
+          <a href="#" class="vietnam">List từ & Quiz</a>
+        </li>
+        <li>
+          <a href="#" class="english">Word Frequency</a>
+          <a href="#" class="vietnam">Độ thông dụng</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+            <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="outline: none;border: none;background-color: black;margin: 7px;" id="lang">Language
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+            <li><a onclick="ToEnglish();">English</a></li>
+            <li><a onclick="ToVietNam();">Việt Nam</a></li>
+            </ul>
+            </div>
+        </li>
+        <li><a href="#" data-toggle="modal" data-target="#login_signup" class="english"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#login_signup" class="vietnam"><span class="glyphicon glyphicon-log-in"></span> Đăng nhập</a></li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center" style="margin-bottom: 20px;">
+  <div class="row" style="height: 60px;background-color: #50A3AC;">
+    <div class="col-sm-2">
+    </div>
+    <div class="col-sm-10"> 
+        <div class="searchframe">
+          <form>
+            <div>
+              <input type="text" name="searchword" class="searchbox" autofocus="yes" placeholder="Search Word" autocomplete="off" id="findBox">
+              <span class="search_select">
+                <button type="button" class="search_button">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <select class="search_option">
+                  <option value="English">English</option>
+                  <option value="VietNam">Viet Nam</option>
+              </select>
+              </span>
+            </div>
+          </form> 
+        </div>
+    </div>
+  </div>   
+</div>
+<div class="container-fluid" >
+  <div class="row">
+    <div class="col-sm-2 side_content">
+    </div>
+    <div class="col-sm-8" id="wlform">
+        <h3 class="english">My Dictionary</h3>
+        <h3 class="vietnam">Từ Điển Của Tôi</h3>
+        <div class="wordlist_form">
+           <div style="width: 100%;">
+                <ul class="nav nav-tabs" id="wltabContent" style="border: none;outline: none; background-color: #eff2f7;" >
+                    <li class="active" style="float: left;width: 50%;">
+                        <a href="#wlist" data-toggle="tab" class="tabTitle" id="w_list">Word Lists</a>
+                    </li>
+                    <li style="float: right;width: 50%;">
+                        <a href="#lprogress" data-toggle="tab" class="tabTitle" id="l_progress">Learning Progress</a>
+                    </li>
+                </ul>            
+            </div>
+
+            <div class="tab-content">
+                  <div class="tab-pane active" id="wlist">
+                          <h3 style="margin-left: 20px;">My Lists</h3>
+                          <div class="form-inline" style="margin-left: 20px;margin-top:10px;">
+                              <button class="btn btn-primary">Create new list</button>
+                              <input type="text" class="form-control" id="new_list" style="margin-left: 2px;">
+                          </div>
+                          <ul style="list-style-type: none;margin-top: 20px;">
+                              <li class="listword">
+                                  <div class="my_list">
+                                      <a href="#" class="listname">List Name</a>
+                                      <span class="glyphicon glyphicon-trash deletelist"></span>
+                                  </div>
+                              </li>
+                              <li class="listword">
+                                  <div class="my_list">
+                                      <a href="#" class="listname">List Name 2</a>
+                                      <span class="glyphicon glyphicon-trash deletelist"></span>
+                                  </div>
+                              </li>
+                          </ul>
+                  </div>
+        
+                  <div class="tab-pane" id="lprogress">
+                      <div class="container-fluid">
+                      </div>   
+                  </div>      
+              </div> 
+        </div>
+    </div>
+    <div class="col-sm-2 side_content">
+    </div>
+  </div>   
+</div>
+<footer class="container-fluid text-center navbar-fixed-bottom" style="opacity: 0.75;">
+  <p>University of Science</p>
+</footer>
+
+<!-- Login -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login_signup" aria-hidden="true" id="login_signup">
+  <div class="modal-dialog modal-sm">
+          <div class="modal-content" style="background-color: #749197">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content">
+                <div class="tab-pane active" id="login">
+                  <h4 style="font-size: 2.0em" id="lgTitle">Login</h4>
+                  <hr><hr>
+              <form id="loginform" method="POST" name="loginform">
+                <div class="form-group">
+                                    <div class="input-group">                               
+                                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <input id="username" type="text" class="form-control" placeholder="Username" name="username"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">                               
+                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                      <input id="password" type="password" class="form-control" placeholder="Password" name="password"/>
+                                    </div>
+                                </div> 
+                            </form>   
+                            <button class="btn btn-success" id="bnLg">Login</button>                
+                </div>
+        
+            <div class="tab-pane" id="signup">
+              <h4 style="font-size: 2.0em" id="snTitle">Sign up</h4>
+                  <hr><hr>
+              <form id="signupform" method="POST" name="signupform">
+                <div class="form-group">
+                                    <div class="input-group">                               
+                                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                      <input id="new_user" type="text" class="form-control" placeholder="Username" name="new_user"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">                               
+                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                      <input id="password1" type="password" class="form-control" placeholder="Password" name="password1"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">                               
+                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                      <input id="password2" type="password" class="form-control" placeholder="Confirm Password" name="password2"/>
+                                    </div>
+                                </div>  
+                            </form> 
+                            <button class="btn btn-success" id="bnSn">Sign up</button>  
+            </div>
+          </div> 
+          <hr>
+          <hr>
+              <div>
+                <ul class="nav nav-tabs" id="tabContent" style="width: 102%;outline: none;border: none;">
+                  <li class="active" style="float: left;width: 50%;">
+                      <a href="#login" data-toggle="tab" style="color:black;font-size: 1.2em;" id="tabLg">Login</a>
+                  </li>
+                  <li style="float: right;width: 50%;">
+                      <a href="#signup" data-toggle="tab" style="color:black;font-size: 1.2em;" id="tabSn">Sign up</a>
+                  </li>
+                </ul>
+              </div>
+          </div>        
+        </div>
+
+    </div>
+ </div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+.wordlist_form{
+	border: solid 1px #d7dae0;
+	width: 100%;
+	height: 300px;
+	border-radius: 3.0px;
+}
+
+.my_list{
+	border: 3px solid #eff1f6;
+    border-left-width: 4px;
+    padding: 12px 30px 12px 10px;
+    margin-bottom: 8px;
+    position: relative;
+    border-left-color: #234b9a;
+}
+
+li.listword{
+	margin-right: 10px;
+}
+
+a.listname{
+	font-weight: 700;
+}
+
+span.deletelist{
+	float: right;
+	cursor: pointer;
+}

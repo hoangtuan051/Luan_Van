@@ -1,0 +1,90 @@
+#headline{
+	border-bottom: 3px solid black;
+	height: 80px;
+}
+#resultant_word{
+	font: 700 40px "noto_serif_devanagari", "Merriweather", sans-serif;
+    position: absolute;
+    top: 120px;
+}
+.tabTitle{
+	color:black !important;
+	font-size: 1.5em;
+}
+
+div.word_form{
+	text-align: left;
+	border-bottom: 1px solid black;
+}
+
+ul.meaning{
+	list-style-type: none;
+}
+ul.meaning li{
+	margin-bottom: 50px;
+}
+ul.meaning h3.word_type{
+	color: #f4a742;
+	margin-left: -35px;
+	margin-top: 2px;
+}
+b.def {
+    font-size: 2.0rem;
+    position: relative;
+    top: -4px;
+    left: -5px;
+
+}
+
+.exam{
+	line-height: 1.2em;
+	margin-left: 30px;
+}
+.exam p{
+	font-style: oblique;
+}
+.exam .more_exam{
+background-color: #50A3AC;
+width: 100%;
+height: 23px;
+cursor: pointer;
+}
+.thesaurus{
+background-color: #50A3AC;
+width: 100%;
+height: 23px;
+cursor: pointer;
+margin-top: 5px;
+}
+
+.plus{
+	outline: none;
+	border: none;
+	background-color: white;
+    display: inline-block;
+    height: 25px;
+    width: 35px;
+    background-image: url('../image/ic_plus.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.word_list{
+	float:left;
+	height:30px;
+	width:100px;
+	border:none;
+	outline:none;
+	background-color:#dce5f4;
+	cursor: pointer;
+}
+
+.word_list:hover{
+	background-color: #6193e8;
+}
+@media screen and (max-width: 550px) {
+      .tabTitle{
+        font-size: 1.0em;
+      }
+}
