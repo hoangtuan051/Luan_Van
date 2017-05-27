@@ -61,8 +61,7 @@ $(document).ready(function(){
                 $(this).find("span").removeClass("glyphicon glyphicon-menu-down text-danger");
                 $(this).find("span").addClass("glyphicon glyphicon-menu-plus text-danger");  
                 $(this).next().css("display","none"); 
-            }
-            
+            }         
     });
 
     var popover_content =   '<div class="row">'+
@@ -96,6 +95,7 @@ $(window).on("beforeunload", function() {
         localStorage.removeItem("curLang");
     }
 });
+
 $(window).on('resize', function() {
   var win = $(this);
   if (win.width() < 791) {
