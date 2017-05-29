@@ -101,26 +101,61 @@ html(lang='en')
         #pos(ng-view='')
           script(type='text/javascript').
             (function(){
-            var user = !{JSON.stringify(data)};
-            var ul = document.createElement('ul');
-            ul.setAttribute('id','proList');
-            var t;
-            document.getElementById('pos').appendChild(ul);
-            for(var i = 0; i < user.length; i++){
-            var li = document.createElement('li');
-            li.setAttribute('class','item');
-            li.style.display = "inline";
-            li.style.padding = "10px";
-            var a = document.createElement('a');
-            t = document.createTextNode(user[i]._);
-            a.appendChild(t);
-            
-            a.href = "http://example.com";
-            li.appendChild(a);
-            ul.appendChild(li);
-            }
+              var user = !{JSON.stringify(data)};
+              var ul = document.createElement('ul');
+              ul.setAttribute('id','proList');
+              var t;
+              document.getElementById('pos').appendChild(ul);
+              for(var i = 0; i < user.length; i++){
+                var li = document.createElement('li');
+                li.setAttribute('class','item');
+                li.style.display = "inline";
+                li.style.padding = "10px";
+                var a = document.createElement('a');
+                a.setAttribute('class','wp');
+                t = document.createTextNode(user[i]._);
+                a.appendChild(t);
+                
+                //a.href = "http://example.com";
+                li.appendChild(a);
+                ul.appendChild(li);
+              }
+
+
+
+              var getdata = function(request){
+                $.ajax({
+                  url: 'http://localhost:3000/word',
+                  type: 'POST',
+                  data: {req: request},
+                  success: function(data){
+                    var res="";
+                    for(var i = 0; i < data.length; i++){
+                      res += data[i] + '\n';
+                    }
+                    
+                    //alert(res);
+                    $('#res').append(data);
+                   
+                    window.location.reload('/');
+                  },
+                  error: function(jqXHR, textStatus, err){
+                    alert('text status '+textStatus+', err '+err);
+                  }
+                });
+              };
+
+              $('.wp').click(function(){
+                $('input[name="myParameterName"]').val($(this).html());
+                var request = $('input[name="myParameterName"]').val();
+                getdata(request);    
+              }); 
             })();
-          p sdsds
+          
+          form#myHiddenFormId(action='/word', method='post', style='display: none')
+            input(type='hidden', name='myParameterName', value='myParameterValue')
+            input(type='submit', style='display: none')
+          p#res sdsds
       .container-fluid(style='background-color: #EEF1F6;margin-bottom: 100px;')
         label.english(style='font-size: 20px;float: left;') Explore our features
         label.vietnam(style='font-size: 20px;float: left;') Các tính năng

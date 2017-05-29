@@ -5,12 +5,21 @@ var fs = require('fs');
 var router = express.Router();
 var path = require('path');
 var mysql      = require('mysql');
+
 var connection = mysql.createConnection({
    host     : 'localhost',
    user     : 'root',
    password : '',
    database : 'dictionary'
  });
+
+var pool = mysql.createPool({
+  host            : 'localhost',
+  user            : 'root',
+  password        : '',
+  database        : 'dictionary'
+});
+
 
 var outputFile = '5.tagged.xml';
 /* GET home page. */
@@ -77,27 +86,38 @@ router.post('/top', function(req, res){
 });
 
 
-// router.get('/word', function(req, res, next){
-//    // var word = req.param();
-//   connection.connect(function(err) {
-//   if (err) {
-//    console.log('error connecting: ' + err.stack);
-//    return;
-//   }
-//   console.log('connected as id ' + connection.threadId);
-//   });
+router.post('/word', function(req, res, next){
+  var key = req.body.req;
+  console.log("key:" + key);
+  var result = [];
+   // var word = req.param();
+  pool.getConnection(function(err, connection){
+    connection.query('select m.mean from meanva m, vietanh v where m.wordid = v.wordid and v.word = "'+ key + '"', function (error, results, fields) {
+      if (error) {
+        console.log('Error in the query');
+        return;
+      }
+      console.log('Successful query');
+      console.log(results);
 
-//   connection.query('SELECT m.mean FROM meanva m, vietanh v  WHERE m.wordid = v.wordid and v.word = "hôm nay"', function (error, results, fields) {
-//   if (!!error) {
-//     console.log('Error in the query');
-//     return;
-//   }
-//   console.log('Successful query');
-//   console.log(results);
-//   res.redirect('/')
+      for(var i = 0; i < results.length; i++){
+        result[i] = results[i].mean;
+      }
 
-//   });
-//   connection.end();
-// }
+      console.log("key:" + key);
+
+      console.log(result);
+
+      //res.render('mainpage', {wordtype: result});
+      res.send(result);
+      
+    });
+    connection.release();
+  });
+
+  
+  //res.send(str);
+
+});
 
 module.exports = router;
