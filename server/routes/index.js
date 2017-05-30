@@ -33,12 +33,6 @@ router.get('/', function(req, res, next) {
 //  console.log('Successful query');
 // });
 
-router.post('/trans', function(req, res){
-    console.log(req.body.searchword);
-    console.log("Success");
-    res.send(JSON.stringify(req.body.searchword));
-});
-
 router.post('/top', function(req, res){
 	console.log(req.body.searchword);
 	console.log("Success");
@@ -80,9 +74,18 @@ router.post('/top', function(req, res){
                 
                 res.render('mainpage', {data: json.doc.s.w});
                 console.log('Done');
+                //res.redirect('/top?search=' + req.body.searchword);
             });
         });
 	});
+});
+
+router.get('/p/:tagId', function(req, res) {
+  res.send("tagId is set to " + req.params.tagId);
+});
+
+router.get('/top', function(req, res, next){
+  res.redirect('/');
 });
 
 
@@ -90,7 +93,7 @@ router.post('/word', function(req, res, next){
   var key = req.body.req;
   console.log("key:" + key);
   var result = [];
-   // var word = req.param();
+
   pool.getConnection(function(err, connection){
     connection.query('select m.mean from meanva m, vietanh v where m.wordid = v.wordid and v.word = "'+ key + '"', function (error, results, fields) {
       if (error) {
@@ -98,26 +101,18 @@ router.post('/word', function(req, res, next){
         return;
       }
       console.log('Successful query');
-      console.log(results);
+    //  console.log(results);
 
       for(var i = 0; i < results.length; i++){
         result[i] = results[i].mean;
       }
 
-      console.log("key:" + key);
-
-      console.log(result);
-
-      //res.render('mainpage', {wordtype: result});
+//      console.log(result);
       res.send(result);
-      
+      //res.redirect('/top' + key);
     });
     connection.release();
   });
-
-  
-  //res.send(str);
-
 });
 
 module.exports = router;

@@ -135,9 +135,9 @@ html(lang='en')
                     }
                     
                     //alert(res);
-                    $('#res').append(data);
+                    $('#res').html(data);
                    
-                    window.location.reload('/');
+                    //window.location.reload('/');
                   },
                   error: function(jqXHR, textStatus, err){
                     alert('text status '+textStatus+', err '+err);
