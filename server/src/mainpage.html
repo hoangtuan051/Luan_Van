@@ -103,7 +103,7 @@
   			<div class="searchframe">
   				<!-- <form action="/search" method="get"> -->
   					<div>
-              <form action="/top" method="post" accept-charset="utf-8">
+              <form action="" method="post" accept-charset="utf-8" id="search-form">
                 <input type="text" name="searchword" class="searchbox" autofocus="yes" placeholder="Search Word" autocomplete="off" id="findBox">
                 <span class="searchselect">
                   <button type="submit" value="submit" class="searchbutton">
@@ -116,6 +116,19 @@
   							  </select>
     						</span>
               </form>
+
+              <script type="text/javascript">
+                  jQuery(document).ready(function(){
+                    $('#search-form').submit(function(){
+                    var url = $("#findBox").val();
+                    if ( url == '' || url == 'http://' || url == 'www.' ){
+                      alert("Valid URL is required"); return false;
+                    } else {
+                       $('#search-form').attr('action', 'http://localhost:3000/?search='+findBox);
+                    }
+                    });
+                  });
+              </script>
   					</div>
   			</div>
       

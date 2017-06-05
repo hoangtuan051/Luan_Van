@@ -90,7 +90,7 @@ html(lang='en')
           .searchframe
             // <form action="/search" method="get">
             div
-              form(action='/top', method='post', accept-charset='utf-8')
+              form(action='/search', method='get', accept-charset='utf-8' id='search-form')
                 input#findBox.searchbox(type='text', name='searchword', autofocus='yes', placeholder='Search Word', autocomplete='off')
                 span.searchselect
                   button.searchbutton(type='submit', value='submit')
@@ -98,6 +98,7 @@ html(lang='en')
                   select.searchoption
                     option(value='English') English
                     option(value='VietNam') Viet Nam
+             
         #pos(ng-view='')
           script(type='text/javascript').
             (function(){
@@ -129,13 +130,19 @@ html(lang='en')
                   type: 'POST',
                   data: {req: request},
                   success: function(data){
-                    var res="";
+                   
+                    var resfull = '';
                     for(var i = 0; i < data.length; i++){
-                      res += data[i] + '\n';
+                      resfull += data[i].mean + '<br />';
+                      if(data[i].example == null){
+                        resfull += '<br />';
+                      }
+                      else
+                        resfull += data[i].example + '<br />';
                     }
                     
-                    //alert(res);
-                    $('#res').html(data);
+                    //alert(resfull);
+                    $('#res').html(resfull);
                    
                     //window.location.reload('/');
                   },
@@ -155,7 +162,7 @@ html(lang='en')
           form#myHiddenFormId(action='/word', method='post', style='display: none')
             input(type='hidden', name='myParameterName', value='myParameterValue')
             input(type='submit', style='display: none')
-          p#res sdsds
+          p#res
       .container-fluid(style='background-color: #EEF1F6;margin-bottom: 100px;')
         label.english(style='font-size: 20px;float: left;') Explore our features
         label.vietnam(style='font-size: 20px;float: left;') Các tính năng

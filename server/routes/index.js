@@ -4,20 +4,20 @@ var express = require('express');
 var fs = require('fs');
 var router = express.Router();
 var path = require('path');
-var mysql      = require('mysql');
+var mysql = require('mysql');
 
-var connection = mysql.createConnection({
-   host     : 'localhost',
-   user     : 'root',
-   password : '',
-   database : 'dictionary'
- });
+// var connection = mysql.createConnection({
+//    host     : 'localhost',
+//    user     : 'root',
+//    password : '',
+//    database : 'dictionary'
+//  });
 
 var pool = mysql.createPool({
   host            : 'localhost',
   user            : 'root',
   password        : '',
-  database        : 'dictionary'
+  database        : 'dictionaryclc'
 });
 
 
@@ -28,18 +28,15 @@ router.get('/', function(req, res, next) {
   res.render('mainpage');
 });
 
-// router.get('/',function(req, res, next) {
-//  	res.sendFile(path.join(__dirname,'../src/mainpage.html'));
-//  console.log('Successful query');
-// });
 
-router.post('/top', function(req, res){
-	console.log(req.body.searchword);
+router.get('/search', function(req, res, next){
+  var searches = req.query.searchword;
+	console.log("params:" + req.query.searchword);
 	console.log("Success");
 	var fs = require('fs');
 	var file = 'file.txt';
 	var wstream = fs.createWriteStream(file);
-	wstream.write(req.body.searchword);
+	wstream.write(searches);
 	wstream.end();
 
 	var arguments = [
@@ -72,6 +69,7 @@ router.post('/top', function(req, res){
                 json = JSON.stringify(result);
                 json = JSON.parse(json);
                 
+                //res.json({Search: req.query.search})
                 res.render('mainpage', {data: json.doc.s.w});
                 console.log('Done');
                 //res.redirect('/top?search=' + req.body.searchword);
@@ -90,26 +88,22 @@ router.get('/top', function(req, res, next){
 
 
 router.post('/word', function(req, res, next){
-  var key = req.body.req;
-  console.log("key:" + key);
-  var result = [];
+  var temp = req.body.req;
+  var key = "^" + temp;
+  console.log("key:" + temp);
 
   pool.getConnection(function(err, connection){
-    connection.query('select m.mean from meanva m, vietanh v where m.wordid = v.wordid and v.word = "'+ key + '"', function (error, results, fields) {
+    connection.query('select m.mean, m.example from meanva m, vaword v where m.wordid = v.id and v.word REGEXP BINARY "' + key + '"', function (error, results, fields) {
       if (error) {
         console.log('Error in the query');
         return;
       }
       console.log('Successful query');
-    //  console.log(results);
-
       for(var i = 0; i < results.length; i++){
-        result[i] = results[i].mean;
+        console.log(results[i].mean);
       }
 
-//      console.log(result);
-      res.send(result);
-      //res.redirect('/top' + key);
+      res.send(results);
     });
     connection.release();
   });
