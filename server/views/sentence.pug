@@ -141,12 +141,10 @@ html(lang='en')
                   type: 'POST',
                   data: {req: request},
                   success: function(data){
-                   alert(data[0].pos);
+                   
                     for(var i = 0; i < data.length; i++){
-                      var pos = document.createElement('div');
-                      pos.setAttribute('class', 'pos');
-                      pos.innerHtml = data[i].pos;
-                      $('.blocks').append(pos);
+                      if(data[i].word === request)
+                        alert(data[i].pos);       
                     }
                     
                    
@@ -163,8 +161,9 @@ html(lang='en')
               $('.RD').click(function(){
                 //alert($(this).html());
                 $('.search_word').html($(this).html());          
-                var request = $('.search_word').val();
-                getdata(request);    
+                $('input[name="myParameterName"]').val($(this).html());
+                var request = $('input[name="myParameterName"]').val();
+                getdata(request);      
               }); 
             })();
 
