@@ -89,19 +89,19 @@ router.get('/top', function(req, res, next){
 
 
 router.post('/word', function(req, res, next){
-  var temp = req;
-  var key = "^" + temp;
-  console.log("key:" + temp);
+  var key = req.body.req;
+  console.log("key:" + key);
 
   pool.getConnection(function(err, connection){
-    connection.query('select m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word REGEXP BINARY "' + key + '"', function (error, results, fields) {
+    connection.query('select v.word ,m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + key + '"' + ', BINARY))', function (error, results, fields) {
       if (error) {
         console.log('Error in the query');
         return;
       }
       console.log('Successful query');
       for(var i = 0; i < results.length; i++){
-        console.log(results[i].mean);
+        if(results[i].word === key)
+         console.log(results[i].pos);
       }
 
       res.send(results);
@@ -109,5 +109,10 @@ router.post('/word', function(req, res, next){
     connection.release();
   });
 });
+
+ // var pos = document.createElement('div');
+ //                      pos.setAttribute('class', 'pos');
+ //                      $('.pos').html(data[i].pos);
+ //                      $('.blocks').append(pos);
 
 module.exports = router;
