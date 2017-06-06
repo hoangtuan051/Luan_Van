@@ -149,17 +149,74 @@ html(lang='en')
                         myNode.removeChild( fc );
                         fc = myNode.firstChild;
                     }
-                    //$("blocks").empty();
+                    $("blocks").empty();
+                    var t;
+                   
                     for(var i = 0; i < data.length; i++){
-                      if(data[i].word === request){
-                        //alert(data[i].pos);
+
+                     
+                      if(data[i].word == request){
+
                         var posdiv = document.createElement('div');
                         posdiv.setAttribute('class', 'pos');
-                        var t = document.createTextNode(data[i].pos);
+                        t = document.createTextNode(data[i].pos);
                         posdiv.appendChild(t);
                         document.getElementById('blocks').appendChild(posdiv);
 
+                        var meandiv = document.createElement('div');
+                        meandiv.setAttribute('class', 'explanation');
+                        t = document.createTextNode(data[i].mean);
+                        meandiv.appendChild(t);
+                        document.getElementById('blocks').appendChild(meandiv);                      
+                        
+                        if(data[i].example != null){
+                          var temp = data[i].example;
+                          var str = temp.split('/');
+                          if(str.length > 1){
+                            for(var j = 0; j < str.length; j++){
+                              var dat = str[i].split(";");
+
+                              var examplediv = document.createElement('div');
+                              examplediv.setAttribute('class', 'exampled');
+                              t = document.createTextNode(dat[0]);
+                              examplediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(examplediv);
+
+                              var translatediv = document.createElement('div');
+                              translatediv.setAttribute('class', 'translated');
+                              t = document.createTextNode(dat[1]);
+                              translatediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(translatediv);
+                              
+                            }
+                                                    
+                          }
+                          else{
+                            
+                            var dat = str[0].split(";");
+                            if(dat.length > 1){
+                              
+                              var examplediv = document.createElement('div');
+                              examplediv.setAttribute('class', 'exampled');
+                              t = document.createTextNode(dat[0]);
+                              examplediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(examplediv);
+
+                              var translatediv = document.createElement('div');
+                              translatediv.setAttribute('class', 'translated');
+                              t = document.createTextNode(dat[1]);
+                              translatediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(translatediv);
+                            }
+                          }
+
+
+                        }
+                        
+                        //alert(data[i].word);
+                        
                       }
+                      
                     }
                     
                    

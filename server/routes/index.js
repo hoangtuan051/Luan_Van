@@ -100,8 +100,8 @@ router.post('/word', function(req, res, next){
       }
       console.log('Successful query');
       for(var i = 0; i < results.length; i++){
-        if(results[i].word === key)
-         console.log(results[i].pos);
+        if(results[i].word === key && results[i].example != null)
+         console.log(results[i].example);
       }
 
       res.send(results);
@@ -110,9 +110,12 @@ router.post('/word', function(req, res, next){
   });
 });
 
+
+
  // var pos = document.createElement('div');
  //                      pos.setAttribute('class', 'pos');
  //                      $('.pos').html(data[i].pos);
  //                      $('.blocks').append(pos);
+
 
 module.exports = router;
