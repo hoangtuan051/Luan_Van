@@ -5,15 +5,14 @@ html(lang='en')
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-    link(rel='stylesheet', type='text/css', media='screen', href='css/mainpage.css')
+    link(rel='stylesheet', type='text/css', href='css/mainpage.css')
     link(rel='stylesheet', type='text/css', href='css/globalcss.css')
+    link(rel='stylesheet', type='text/css', href='css/search.css')
+    link(rel='stylesheet', type='text/css', href='css/sentence.css')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-    script(src='js/mainpage.js')
-    script(src='js/translate.js')
-    
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js')
+    script(src='js/sentence_parse.js')
     style.
       /* Remove the navbar's default margin-bottom and rounded borders */
       .navbar {
@@ -21,10 +20,9 @@ html(lang='en')
       border-radius: 0;
       }
       /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-      .row.content {height: 450px}
+      .row.content {height: 450px;}
       /* Set gray background color and 100% height */
       .sidenav {
-      padding-top: 20px;
       background-color: #f1f1f1;
       height: 100%;
       }
@@ -42,7 +40,7 @@ html(lang='en')
       }
       .row.content {height:auto;}
       }
-  body(ng-app='')
+  body
     nav.navbar.navbar-inverse
       .container-fluid
         .navbar-header
@@ -53,10 +51,10 @@ html(lang='en')
           a.navbar-brand(href='mainpage.html') Smart Dictionary
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
-            li.active
+            li
               a.english(href='mainpage.html') Home
               a.vietnam(href='mainpage.html') Trang Chủ
-            li
+            li.active
               a.english(href='#') Sentence Parsing
               a.vietnam(href='#') Dịch câu
             li
@@ -84,66 +82,58 @@ html(lang='en')
               a.vietnam(href='#', data-toggle='modal', data-target='#login_signup')
                 span.glyphicon.glyphicon-log-in
                 |  Đăng nhập
-    .container-fluid.text-center
-      .row.content
-        img(src='image/mainpage.png', style='width: 100%;height: 250px')
-        #search
-          .searchframe
-            // <form action="/search" method="get">
-            div
-              form(action='/search', method='get', accept-charset='utf-8' id='search-form')
-                input#findBox.searchbox(type='text', name='searchword', autofocus='yes', placeholder='Search Word', autocomplete='off')
-                span.searchselect
-                  button.searchbutton(type='submit', value='submit')
+    .container-fluid.text-center(style='margin-top: 40px;')
+      .row(style='height: 60px')
+        .col-sm-2
+        .col-sm-10
+          .searchframe(style='border-color: gray;border-style: solid;border-radius: 5px;border-width:2px;')
+            form(action='/search' method='get' accept-charset='utf-8' id='search-form')
+              div
+                input#sentence_parse.searchbox(type='text', name='searchword', autofocus='yes', placeholder='Enter sentence', autocomplete='off')
+                span.search_select
+                  button.search_button(type='submit', value='submit')
                     i.fa.fa-search(aria-hidden='true')
-                  select.searchoption
+                  select.search_option
                     option(value='English') English
                     option(value='VietNam') Viet Nam
-             
-        #pos(ng-view='')
-          script(type='text/javascript').
+      #results
+      .meanings
+        #rs_title
+          span#sound.glyphicon.glyphicon-volume-down
+          span.search_word
+          form#myHiddenFormId(action='/word', method='post', style='display: none')
+            input(type='hidden', name='myParameterName', value='myParameterValue')
+            input(type='submit', style='display: none')
+        .blocks
+      
+
+        script(type='text/javascript').
             (function(){
               
               var user = !{JSON.stringify(data)};
-     
+              var t;
               if(user.length > 0){
-                var ul = document.createElement('ul');
-                ul.setAttribute('id','proList');
-                var t;
-                document.getElementById('pos').appendChild(ul);
                 for(var i = 0; i < user.length; i++){
-                  var li = document.createElement('li');
-                  li.setAttribute('class','item');
-                  li.style.display = "inline";
-                  li.style.padding = "10px";
-                  var a = document.createElement('a');
-                  a.setAttribute('class','wp');
+                  var span = document.createElement('span');
+                  span.setAttribute('class', 'RD');
+                  span.setAttribute('data-toggle', 'tooltip');
+                  span.setAttribute('data-placement', 'bottom');
+                  span.setAttribute('title',user[i].pos);
                   t = document.createTextNode(user[i]._);
-                  a.appendChild(t);
-                  
-                  //a.href = "http://example.com";
-                  li.appendChild(a);
-                  ul.appendChild(li);
+                  span.appendChild(t);
+                  $('#results').append(span);
                 }
               }
               else{
-                var ul = document.createElement('ul');
-                ul.setAttribute('id','proList');
-                $('#pos').append(ul);
-                var li = document.createElement('li');
-                li.setAttribute('class','item');
-                li.style.display = "inline";
-                li.style.padding = "10px";
-                var a = document.createElement('a');
-                a.setAttribute('class','wp');
-                var t = document.createTextNode(user._);
-                a.appendChild(t);
-                
-                //a.href = "http://example.com";
-                li.appendChild(a);
-                ul.appendChild(li);
+                 var span = document.createElement('span');
+                  span.setAttribute('class', 'RD');
+                  span.setAttribute('data-toggle', 'tooltip');
+                  span.setAttribute('data-placement', 'bottom');
+                  span.setAttribute('title',user.pos);
+                  t = document.createTextNode(user._);
+                  span.appendChild(t);
+                  $('#results').append(span);
               }
-
 
               var getdata = function(request){
                 $.ajax({
@@ -151,19 +141,16 @@ html(lang='en')
                   type: 'POST',
                   data: {req: request},
                   success: function(data){
-                   
-                    var resfull = '';
+                   alert(data[0].pos);
                     for(var i = 0; i < data.length; i++){
-                      resfull += data[i].mean + '<br />';
-                      if(data[i].example == null){
-                        resfull += '<br />';
-                      }
-                      else
-                        resfull += data[i].example + '<br />';
+                      var pos = document.createElement('div');
+                      pos.setAttribute('class', 'pos');
+                      pos.innerHtml = data[i].pos;
+                      $('.blocks').append(pos);
                     }
                     
-                    //alert(resfull);
-                    $('#res').html(resfull);
+                   
+                    //$('#res').html(resfull);
                    
                     //window.location.reload('/');
                   },
@@ -173,39 +160,15 @@ html(lang='en')
                 });
               };
 
-              $('.wp').click(function(){
-                $('input[name="myParameterName"]').val($(this).html());
-                var request = $('input[name="myParameterName"]').val();
+              $('.RD').click(function(){
+                //alert($(this).html());
+                $('.search_word').html($(this).html());          
+                var request = $('.search_word').val();
                 getdata(request);    
               }); 
             })();
-          
-          form#myHiddenFormId(action='/word', method='post', style='display: none')
-            input(type='hidden', name='myParameterName', value='myParameterValue')
-            input(type='submit', style='display: none')
-          p#res
-      .container-fluid(style='background-color: #EEF1F6;margin-bottom: 100px;')
-        label.english(style='font-size: 20px;float: left;') Explore our features
-        label.vietnam(style='font-size: 20px;float: left;') Các tính năng
-        br
-        br
-        .row
-          .col-sm-4
-            .gallery
-              a(href='#')
-                img(src='image/America.jpg')
-              a#imgSen.desc Sentence Parsing
-          .col-sm-4
-            .gallery
-              a(href='wordlist_page.html')
-                img(src='image/England.jpg')
-              a#imgList.desc Word Lists & Quiz
-          .col-sm-4
-            .gallery
-              a(href='#')
-                img(src='image/Australia.jpg')
-              a#imgFre.desc Word Frequency
-    footer.container-fluid.text-center.navbar-fixed-bottom(style='opacity: 0.75')
+
+    footer.container-fluid.text-center.navbar-fixed-bottom(style='opacity: 0.75;')
       p University of Science
     // Login
     #login_signup.modal.fade(tabindex='-1', role='dialog', aria-labelledby='login_signup', aria-hidden='true')

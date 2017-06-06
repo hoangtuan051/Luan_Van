@@ -25,7 +25,7 @@ var outputFile = '5.tagged.xml';
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
-  res.render('mainpage');
+  res.render('sentence');
 });
 
 
@@ -69,8 +69,9 @@ router.get('/search', function(req, res, next){
                 json = JSON.stringify(result);
                 json = JSON.parse(json);
                 
-                //res.json({Search: req.query.search})
-                res.render('mainpage', {data: json.doc.s.w});
+                  //res.json({Search: req.query.search})
+                console.log(json.doc.s.w);
+                res.render('sentence', {data:json.doc.s.w});
                 console.log('Done');
                 //res.redirect('/top?search=' + req.body.searchword);
             });
@@ -88,12 +89,12 @@ router.get('/top', function(req, res, next){
 
 
 router.post('/word', function(req, res, next){
-  var temp = req.body.req;
+  var temp = req;
   var key = "^" + temp;
   console.log("key:" + temp);
 
   pool.getConnection(function(err, connection){
-    connection.query('select m.mean, m.example from meanva m, vaword v where m.wordid = v.id and v.word REGEXP BINARY "' + key + '"', function (error, results, fields) {
+    connection.query('select m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word REGEXP BINARY "' + key + '"', function (error, results, fields) {
       if (error) {
         console.log('Error in the query');
         return;
