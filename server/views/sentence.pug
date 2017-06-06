@@ -104,7 +104,7 @@ html(lang='en')
           form#myHiddenFormId(action='/word', method='post', style='display: none')
             input(type='hidden', name='myParameterName', value='myParameterValue')
             input(type='submit', style='display: none')
-        .blocks
+        #blocks
       
 
         script(type='text/javascript').
@@ -142,9 +142,24 @@ html(lang='en')
                   data: {req: request},
                   success: function(data){
                    
+                    var myNode = document.getElementById('blocks');
+                    var fc = myNode.firstChild;
+
+                    while( fc ) {
+                        myNode.removeChild( fc );
+                        fc = myNode.firstChild;
+                    }
+                    //$("blocks").empty();
                     for(var i = 0; i < data.length; i++){
-                      if(data[i].word === request)
-                        alert(data[i].pos);       
+                      if(data[i].word === request){
+                        //alert(data[i].pos);
+                        var posdiv = document.createElement('div');
+                        posdiv.setAttribute('class', 'pos');
+                        var t = document.createTextNode(data[i].pos);
+                        posdiv.appendChild(t);
+                        document.getElementById('blocks').appendChild(posdiv);
+
+                      }
                     }
                     
                    
