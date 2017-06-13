@@ -75,11 +75,12 @@ html(lang='en')
                   li
                     a(onclick='ToVietNam();') Việt Nam
             li
-              a.english(href='#', data-toggle='modal', data-target='#login_signup')
+              a.english#eng(href='/login')
                 span.glyphicon.glyphicon-log-in
                 |  Login
+              
             li
-              a.vietnam(href='#', data-toggle='modal', data-target='#login_signup')
+              a.vietnam(href='/login')
                 span.glyphicon.glyphicon-log-in
                 |  Đăng nhập
     .container-fluid.text-center(style='margin-top: 40px;')
@@ -172,9 +173,10 @@ html(lang='en')
                         if(data[i].example != null){
                           var temp = data[i].example;
                           var str = temp.split('/');
+                          
                           if(str.length > 1){
                             for(var j = 0; j < str.length; j++){
-                              var dat = str[i].split(";");
+                              var dat = str[j].split(';');
 
                               var examplediv = document.createElement('div');
                               examplediv.setAttribute('class', 'exampled');
@@ -186,14 +188,12 @@ html(lang='en')
                               translatediv.setAttribute('class', 'translated');
                               t = document.createTextNode(dat[1]);
                               translatediv.appendChild(t);
-                              document.getElementById('blocks').appendChild(translatediv);
-                              
-                            }
-                                                    
+                              document.getElementById('blocks').appendChild(translatediv);                            
+                            }                                                   
                           }
                           else{
                             
-                            var dat = str[0].split(";");
+                            var dat = str[0].split(';');
                             if(dat.length > 1){
                               
                               var examplediv = document.createElement('div');
@@ -210,10 +210,7 @@ html(lang='en')
                             }
                           }
 
-
                         }
-                        
-                        //alert(data[i].word);
                         
                       }
                       
@@ -241,19 +238,20 @@ html(lang='en')
 
     footer.container-fluid.text-center.navbar-fixed-bottom(style='opacity: 0.75;')
       p University of Science
+
     // Login
     #login_signup.modal.fade(tabindex='-1', role='dialog', aria-labelledby='login_signup', aria-hidden='true')
       .modal-dialog.modal-sm
         .modal-content(style='background-color: #749197')
           .modal-header
+            span.glyphicon.glyphicon-lock
+                | LOG IN
             button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
           .modal-body
             .tab-content
               #login.tab-pane.active
-                h4#lgTitle(style='font-size: 2.0em') Login
-                hr
-                hr
-                form#loginform(method='POST', name='loginform')
+                #error.alert.alert-danger(style="display:none;")
+                form#loginform(method='POST', name='loginform' action="/auth/login")
                   .form-group
                     .input-group
                       span.input-group-addon
@@ -264,33 +262,17 @@ html(lang='en')
                       span.input-group-addon
                         i.fa.fa-lock
                       input#password.form-control(type='password', placeholder='Password', name='password')
-                button#bnLg.btn.btn-success Login
-              #signup.tab-pane
-                h4#snTitle(style='font-size: 2.0em') Sign up
-                hr
-                hr
-                form#signupform(method='POST', name='signupform')
                   .form-group
-                    .input-group
-                      span.input-group-addon
-                        i.fa.fa-user
-                      input#new_user.form-control(type='text', placeholder='Username', name='new_user')
-                  .form-group
-                    .input-group
-                      span.input-group-addon
-                        i.fa.fa-lock
-                      input#password1.form-control(type='password', placeholder='Password', name='password1')
-                  .form-group
-                    .input-group
-                      span.input-group-addon
-                        i.fa.fa-lock
-                      input#password2.form-control(type='password', placeholder='Confirm Password', name='password2')
-                button#bnSn.btn.btn-success Sign up
-            hr
-            hr
+                    button#bnLg.btn.btn-success(type='submit') Login
+                
+          .modal-footer
             div
               ul#tabContent.nav.nav-tabs(style='width: 102%;outline: none;border: none;')
                 li.active(style='float: left;width: 50%;')
                   a#tabLg(href='#login', data-toggle='tab', style='color:black;font-size: 1.2em;') Login
                 li(style='float: right;width: 50%;')
-                  a#tabSn(href='#signup', data-toggle='tab', style='color:black;font-size: 1.2em;') Sign up
+                  a#tabSn(href='#signup', data-toggle='tab', style='color:black;font-size: 1.2em;') Close        
+  script(type='text/javascript').
+
+    
+    

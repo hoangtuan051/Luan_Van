@@ -1,0 +1,270 @@
+doctype html
+html(lang='en')
+  head
+    title Smart Dictionary
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='css/mainpage.css')
+    link(rel='stylesheet', type='text/css', href='css/globalcss.css')
+    link(rel='stylesheet', type='text/css', href='css/search.css')
+    link(rel='stylesheet', type='text/css', href='css/sentence.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='js/sentence_parse.js')
+    style.
+      /* Remove the navbar's default margin-bottom and rounded borders */
+      .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      }
+      /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+      .row.content {height: 450px;}
+      /* Set gray background color and 100% height */
+      .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+      }
+      /* Set black background color, white text and some padding */
+      footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+      }
+      /* On small screens, set height to 'auto' for sidenav and grid */
+      @media screen and (max-width: 767px) {
+      .sidenav {
+      height: auto;
+      padding: 15px;
+      }
+      .row.content {height:auto;}
+      }
+  body
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#myNavbar')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='mainpage.html') Smart Dictionary
+        #myNavbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a.english(href='mainpage.html') Home
+              a.vietnam(href='mainpage.html') Trang Chủ
+            li.active
+              a.english(href='#') Sentence Parsing
+              a.vietnam(href='#') Dịch câu
+            li
+              a.english(href='#') Word Lists & Quiz
+              a.vietnam(href='#') List từ & Quiz
+            li
+              a.english(href='#') Word Frequency
+              a.vietnam(href='#') Độ thông dụng
+          ul.nav.navbar-nav.navbar-right
+            li
+              .dropdown
+                button#lang.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', style='outline: none;border: none;background-color: black;margin: 7px;')
+                  | Language
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(onclick='ToEnglish();') English
+                  li
+                    a(onclick='ToVietNam();') Việt Nam
+            li
+              a(href="/logout")
+                p #{info}
+    .container-fluid.text-center(style='margin-top: 40px;')
+      .row(style='height: 60px')
+        .col-sm-2
+        .col-sm-10
+          .searchframe(style='border-color: gray;border-style: solid;border-radius: 5px;border-width:2px;')
+            form(action='/search' method='get' accept-charset='utf-8' id='search-form')
+              div
+                input#sentence_parse.searchbox(type='text', name='searchword', autofocus='yes', placeholder='Enter sentence', autocomplete='off')
+                span.search_select
+                  button.search_button(type='submit', value='submit')
+                    i.fa.fa-search(aria-hidden='true')
+                  select.search_option
+                    option(value='English') English
+                    option(value='VietNam') Viet Nam
+      #results
+      .meanings
+        #rs_title
+          span#sound.glyphicon.glyphicon-volume-down
+          span.search_word
+          form#myHiddenFormId(action='/word', method='post', style='display: none')
+            input(type='hidden', name='myParameterName', value='myParameterValue')
+            input(type='submit', style='display: none')
+        #blocks
+      
+
+        script(type='text/javascript').
+            (function(){
+              
+              var user = !{JSON.stringify(data)};
+              var t;
+              if(user.length > 0){
+                for(var i = 0; i < user.length; i++){
+                  var span = document.createElement('span');
+                  span.setAttribute('class', 'RD');
+                  span.setAttribute('data-toggle', 'tooltip');
+                  span.setAttribute('data-placement', 'bottom');
+                  span.setAttribute('title',user[i].pos);
+                  t = document.createTextNode(user[i]._);
+                  span.appendChild(t);
+                  $('#results').append(span);
+                }
+              }
+              else{
+                 var span = document.createElement('span');
+                  span.setAttribute('class', 'RD');
+                  span.setAttribute('data-toggle', 'tooltip');
+                  span.setAttribute('data-placement', 'bottom');
+                  span.setAttribute('title',user.pos);
+                  t = document.createTextNode(user._);
+                  span.appendChild(t);
+                  $('#results').append(span);
+              }
+
+              var getdata = function(request){
+                $.ajax({
+                  url: 'http://localhost:3000/word',
+                  type: 'POST',
+                  data: {req: request},
+                  success: function(data){
+                   
+                    var myNode = document.getElementById('blocks');
+                    var fc = myNode.firstChild;
+
+                    while( fc ) {
+                        myNode.removeChild( fc );
+                        fc = myNode.firstChild;
+                    }
+                    $("blocks").empty();
+                    var t;
+                   
+                    for(var i = 0; i < data.length; i++){
+
+                     
+                      if(data[i].word == request){
+
+                        var posdiv = document.createElement('div');
+                        posdiv.setAttribute('class', 'pos');
+                        t = document.createTextNode(data[i].pos);
+                        posdiv.appendChild(t);
+                        document.getElementById('blocks').appendChild(posdiv);
+
+                        var meandiv = document.createElement('div');
+                        meandiv.setAttribute('class', 'explanation');
+                        t = document.createTextNode(data[i].mean);
+                        meandiv.appendChild(t);
+                        document.getElementById('blocks').appendChild(meandiv);                      
+                        
+                        if(data[i].example != null){
+                          var temp = data[i].example;
+                          var str = temp.split('/');
+                          if(str.length > 1){
+                            for(var j = 0; j < str.length; j++){
+                              var dat = str[i].split(";");
+
+                              var examplediv = document.createElement('div');
+                              examplediv.setAttribute('class', 'exampled');
+                              t = document.createTextNode(dat[0]);
+                              examplediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(examplediv);
+
+                              var translatediv = document.createElement('div');
+                              translatediv.setAttribute('class', 'translated');
+                              t = document.createTextNode(dat[1]);
+                              translatediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(translatediv);
+                              
+                            }
+                                                    
+                          }
+                          else{
+                            
+                            var dat = str[0].split(";");
+                            if(dat.length > 1){
+                              
+                              var examplediv = document.createElement('div');
+                              examplediv.setAttribute('class', 'exampled');
+                              t = document.createTextNode(dat[0]);
+                              examplediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(examplediv);
+
+                              var translatediv = document.createElement('div');
+                              translatediv.setAttribute('class', 'translated');
+                              t = document.createTextNode(dat[1]);
+                              translatediv.appendChild(t);
+                              document.getElementById('blocks').appendChild(translatediv);
+                            }
+                          }
+
+                        }
+                        
+                      }
+                      
+                    }
+                    
+                   
+                    //$('#res').html(resfull);
+                   
+                    //window.location.reload('/');
+                  },
+                  error: function(jqXHR, textStatus, err){
+                    alert('text status '+textStatus+', err '+err);
+                  }
+                });
+              };
+
+              $('.RD').click(function(){
+                //alert($(this).html());
+                $('.search_word').html($(this).html());          
+                $('input[name="myParameterName"]').val($(this).html());
+                var request = $('input[name="myParameterName"]').val();
+                getdata(request);      
+              }); 
+            })();
+
+    footer.container-fluid.text-center.navbar-fixed-bottom(style='opacity: 0.75;')
+      p University of Science
+
+    // Login
+    #login_signup.modal.fade(tabindex='-1', role='dialog', aria-labelledby='login_signup', aria-hidden='true')
+      .modal-dialog.modal-sm
+        .modal-content(style='background-color: #749197')
+          .modal-header
+            span.glyphicon.glyphicon-lock
+                | LOG IN
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          .modal-body
+            .tab-content
+              #login.tab-pane.active
+                #error.alert.alert-danger(style="display:none;")
+                form#loginform(method='POST', name='loginform' action="/auth/login")
+                  .form-group
+                    .input-group
+                      span.input-group-addon
+                        i.fa.fa-user
+                      input#username.form-control(type='text', placeholder='Username', name='username')
+                  .form-group
+                    .input-group
+                      span.input-group-addon
+                        i.fa.fa-lock
+                      input#password.form-control(type='password', placeholder='Password', name='password')
+                  .form-group
+                    button#bnLg.btn.btn-success(type='submit') Login
+                
+          .modal-footer
+            div
+              ul#tabContent.nav.nav-tabs(style='width: 102%;outline: none;border: none;')
+                li.active(style='float: left;width: 50%;')
+                  a#tabLg(href='#login', data-toggle='tab', style='color:black;font-size: 1.2em;') Login
+                li(style='float: right;width: 50%;')
+                  a#tabSn(href='#signup', data-toggle='tab', style='color:black;font-size: 1.2em;') Close        
+    

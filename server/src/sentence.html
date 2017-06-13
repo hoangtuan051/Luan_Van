@@ -46,6 +46,8 @@
       }
       .row.content {height:auto;} 
     }
+  
+
   </style>
 
 </head>
@@ -145,76 +147,77 @@
 <!-- Login -->
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="login_signup" aria-hidden="true" id="login_signup">
   <div class="modal-dialog modal-sm">
-          <div class="modal-content" style="background-color: #749197">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  
-                </div>
-                <div class="modal-body">
-                    <div class="tab-content">
-                <div class="tab-pane active" id="login">
-                  <h4 style="font-size: 2.0em" id="lgTitle">Login</h4>
-                  <hr><hr>
-              <form id="loginform" method="POST" name="loginform">
-                <div class="form-group">
-                                    <div class="input-group">                               
-                                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                      <input id="username" type="text" class="form-control" placeholder="Username" name="username"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">                               
-                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                      <input id="password" type="password" class="form-control" placeholder="Password" name="password"/>
-                                    </div>
-                                </div> 
-                            </form>   
-                            <button class="btn btn-success" id="bnLg">Login</button>                
-                </div>
-        
-            <div class="tab-pane" id="signup">
-              <h4 style="font-size: 2.0em" id="snTitle">Sign up</h4>
-                  <hr><hr>
-              <form id="signupform" method="POST" name="signupform">
-                <div class="form-group">
-                                    <div class="input-group">                               
-                                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                      <input id="new_user" type="text" class="form-control" placeholder="Username" name="new_user"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">                               
-                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                      <input id="password1" type="password" class="form-control" placeholder="Password" name="password1"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">                               
-                                      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                      <input id="password2" type="password" class="form-control" placeholder="Confirm Password" name="password2"/>
-                                    </div>
-                                </div>  
-                            </form> 
-                            <button class="btn btn-success" id="bnSn">Sign up</button>  
-            </div>
-          </div> 
-          <hr>
-          <hr>
-              <div>
-                <ul class="nav nav-tabs" id="tabContent" style="width: 102%;outline: none;border: none;">
-                  <li class="active" style="float: left;width: 50%;">
-                      <a href="#login" data-toggle="tab" style="color:black;font-size: 1.2em;" id="tabLg">Login</a>
-                  </li>
-                  <li style="float: right;width: 50%;">
-                      <a href="#signup" data-toggle="tab" style="color:black;font-size: 1.2em;" id="tabSn">Sign up</a>
-                  </li>
-                </ul>
-              </div>
-          </div>        
+    <div class="modal-content" style="background-color: #749197">
+        <div class="modal-header">
+          <span class="glyphicon glyphicon-lock"></span> ĐĂNG NHẬP
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
-
+        <div class="modal-body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="login">      
+                <form id="loginform" method="POST" name="loginform" action="/auth/login">
+                  <div class="form-group">
+                      <div class="input-group">                               
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input id="username" type="text" class="form-control" placeholder="Username" name="username"/>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="input-group">                               
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input id="password" type="password" class="form-control" placeholder="Password" name="password"/>
+                      </div>
+                  </div>
+                  <button class="btn btn-success" id="bnLg">Login</button> 
+                </form>                             
+              </div>
+  
+              <div class="tab-pane" id="signup">
+                <h4 style="font-size: 2.0em" id="snTitle">Sign up</h4>
+                <form id="signupform" method="POST" name="signupform">
+                  <div class="form-group">
+                      <div class="input-group">                               
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input id="new_user" type="text" class="form-control" placeholder="Username" name="new_user"/>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="input-group">                               
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input id="password1" type="password" class="form-control" placeholder="Password" name="password1"/>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="input-group">                               
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input id="password2" type="password" class="form-control" placeholder="Confirm Password" name="password2"/>
+                      </div>
+                  </div>
+                  <button class="btn btn-success" id="bnSn">Sign up</button>   
+                </form>              
+              </div>
+            </div> 
+            <hr>
+            <hr>
+            <div>
+              <ul class="nav nav-tabs" id="tabContent" style="width: 102%;outline: none;border: none;">
+                <li class="active" style="float: left;width: 50%;">
+                    <a href="#login" data-toggle="tab" style="color:black;font-size: 1.2em;" id="tabLg">Login</a>
+                </li>
+                <li style="float: right;width: 50%;">
+                    <a href="#signup" data-toggle="tab" style="color:black;font-size: 1.2em;" id="tabSn">Sign up</a>
+                </li>
+              </ul>
+            </div>
+      </div>
+              
     </div>
+
+  </div>
  </div>
+ <script src="/javascripts/application.js" type="text/javascript" charset="utf-8" async defer>
+   
+ </script>
 
 </body>
 </html>

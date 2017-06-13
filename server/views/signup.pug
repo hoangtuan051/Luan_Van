@@ -1,0 +1,150 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Sign up
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    link(href='https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', rel='stylesheet')
+    script(src='http://code.jquery.com/jquery-1.11.1.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    style(type='text/css').
+      body
+      {
+      padding-top:40px;
+      }
+      .body-bg{
+      background: linear-gradient(to right,#7cacdc,#e0e5eb);
+      }
+      form{
+      font-family: 'Roboto', sans-serif;
+      }
+      .form-horizontal .header{
+      background: #b5953f;
+      padding: 10px 25px;
+      font-size: 30px;
+      color: #fff;
+      text-transform: uppercase;
+      border-radius: 3px 3px 0 0;
+      }
+      .form-horizontal .form-content{
+      padding: 25px;
+      background: #f9fafd;
+      }
+      .form-horizontal .form-control{
+      padding: 10px 50px 10px 15px;
+      height: 50px;
+      font-size: 18px;
+      color: #000;
+      border: 2px solid #acacac;
+      margin-bottom: 15px;
+      }
+      .form-horizontal .form-control:hover{
+      border-color: #c9af67;
+      }
+      .form-horizontal .form-control:focus{
+      border-color: #b5953f;
+      box-shadow: none;
+      }
+      .form-horizontal .control-label{
+      width: 42px;
+      height: 40px;
+      font-size: 17px;
+      color: #acacac;
+      border-left: 1px solid #acacac;
+      position: absolute;
+      top: 5px;
+      right: 20px;
+      text-align: center;
+      }
+      .form-horizontal .captcha{
+      padding-right: 0;
+      }
+      .form-horizontal .captcha label{
+      background: #e0e0e0;
+      display: block;
+      height: 50px;
+      font-size: 16px;
+      color: #acacac;
+      line-height: 45px;
+      text-align: center;
+      border-radius: 3px 0 0 3px;
+      }
+      .form-horizontal .captcha-text{
+      padding-left: 0;
+      }
+      .form-horizontal .captcha-text input{
+      border-radius: 0 3px 3px 0;
+      }
+      .form-horizontal .footer{
+      background: #e8eaf6;
+      border-top: 1px solid #b5953f;
+      padding: 10px 25px;
+      }
+      .form-horizontal .footer .btn{
+      background: #b5953f;
+      font-size: 18px;
+      color: #fff;
+      float: right;
+      margin: 10px 0;
+      clear: both;
+      padding: 10px 25px;
+      transition: all 0.5s ease 0s;
+      }
+      .form-horizontal .name{
+      padding: 10px 15px;
+      }
+      @media only screen and (max-width:767px){
+      .form-horizontal .control-label i{
+      line-height: 40px;
+      }
+      .form-horizontal .captcha label{
+      font-size: 13px;
+      }
+      }
+  body.body-bg
+    .container
+      .row
+        .col-md-offset-2.col-md-8
+          form.form-horizontal(method='POST', action='/auth/signup')
+            .header Đăng ký
+            .form-content
+            -if ({message.length} > 0)
+              .alert.alert-danger #{message}
+              .form-group
+                .col-sm-6
+                  input#exampleInputName2.form-control.name(placeholder='Họ', type='text', name='ho')
+                .col-sm-6
+                  input#exampleInputName2.form-control.name(placeholder='Số điện thoại', type='text', name='sdt')
+              .form-group
+                .col-sm-6
+                  input#exampleInputName2.form-control(placeholder='Tài khoản', type='text', name='username')
+                  label.control-label(for='exampleInputName2')
+                    i.fa.fa-user
+                .col-sm-6
+                  input#exampleInputName2.form-control(placeholder='Địa chỉ Email', type='email', name='email')
+                  label.control-label(for='exampleInputName2')
+                    i.fa.fa-envelope-o
+              .form-group
+                .col-sm-6
+                  input#exampleInputName2.form-control(placeholder='Mật khẩu', type='password', name='password')
+                  label.control-label(for='exampleInputName2')
+                    i.fa.fa-lock
+                .col-sm-6
+                  input#exampleInputName2.form-control(placeholder='Xác nhận mật khẩu', type='password', name='passwordagain')
+                  label.control-label(for='exampleInputName2')
+                    i.fa.fa-unlock
+              .form-group
+                .col-sm-12
+                  select.form-control
+                    option(value='none', selected='') Chọn giới tính...
+                    option(value='male') Nam
+                    option(value='female') Nữ
+                    option(value='other') Khác
+              .form-group
+                .col-sm-2.col-xs-3.captcha
+                  label.captcha 5 + 5 = 
+                .col-sm-10.col-xs-9.captcha-text
+                  input.form-control.name(placeholder='Nhập kết quả', type='text')
+            .footer.clearfix
+              button.btn.btn-default(type='submit') Đăng ký ngay

@@ -5,6 +5,7 @@ var fs = require('fs');
 var router = express.Router();
 var path = require('path');
 var mysql = require('mysql');
+var passport = require('passport');
 
 // var connection = mysql.createConnection({
 //    host     : 'localhost',
@@ -79,14 +80,6 @@ router.get('/search', function(req, res, next){
 	});
 });
 
-router.get('/p/:tagId', function(req, res) {
-  res.send("tagId is set to " + req.params.tagId);
-});
-
-router.get('/top', function(req, res, next){
-  res.redirect('/');
-});
-
 
 router.post('/word', function(req, res, next){
   var key = req.body.req;
@@ -110,12 +103,88 @@ router.post('/word', function(req, res, next){
   });
 });
 
+var users;
 
+// =====================================
+// LOGIN ===============================
+// =====================================
+// show the login form
+router.get('/login', function(req, res) {
 
- // var pos = document.createElement('div');
- //                      pos.setAttribute('class', 'pos');
- //                      $('.pos').html(data[i].pos);
- //                      $('.blocks').append(pos);
+  // render the page and pass in any flash data if it exists
+  res.render('login', { message: req.flash('loginMessage') });
+});
+
+router.get('/success', function(req, res){
+  if(req.isAuthenticated()){
+    res.render('success', {info: users});
+  }
+  else{
+    res.send("chua login");
+  }
+});
+
+router.post('/login', function(req, res, next) {
+  passport.authenticate('local-login', function(err, user, info) {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/login'); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      users = user.username;
+      return res.redirect('/success');
+
+    });
+  })(req, res, next)
+});
+
+// process the login form
+// router.post('/login', passport.authenticate('local-login', {
+//         successRedirect : '/success', // redirect to the secure profile section
+//         failureRedirect : '/login', // redirect back to the signup page if there is an error
+//         failureFlash : true // allow flash messages
+// }));
+
+// =====================================
+// SIGNUP ==============================
+// =====================================
+// show the signup form
+router.get('/register', function(req, res) {
+  // render the page and pass in any flash data if it exists
+  res.render('register', { message: req.flash('signupMessage') });
+});
+
+// process the signup form
+router.post('/register', passport.authenticate('local-signup', {
+  successRedirect : '/login', // redirect to the secure profile section
+  failureRedirect : '/register', // redirect back to the signup page if there is an error
+  failureFlash : true // allow flash messages
+}));
+
+// =====================================
+// PROFILE SECTION =========================
+// =====================================
+// we will want this protected so you have to be logged in to visit
+// we will use route middleware to verify this (the isLoggedIn function)
+router.get('/profile', isLoggedIn, function(req, res) {
+  res.render('profile', {
+    user : req.user // get the user out of session and pass to template
+  });
+});
+
+// =====================================
+// LOGOUT ==============================
+// =====================================
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 
 module.exports = router;
+
+//route middleware to make sure
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated())
+      return next();
+  res.redirect('/');
+}
