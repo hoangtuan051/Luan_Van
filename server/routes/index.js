@@ -23,12 +23,27 @@ var pool = mysql.createPool({
 
 
 var outputFile = '5.tagged.xml';
+var outputFileav = 'output.xml';
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
   res.render('sentence');
 });
 
+router.get('/quizz', function(req, res, next){
+  pool.getConnection(function(err, connection){
+    connection.query('select wordid, selection, answer, question_text from quiz, questions where quiz.question_type = questions.question_type', function(err, results, fields){
+      if(err){
+        console.log('Error in the query');
+        return;
+      }
+      console.log('Successful query');
+      console.log('data:' + results.length);
+      res.render('quizz', {listquizz: results});
+    });
+    connection.release();
+  });
+});
 
 router.get('/search', function(req, res, next){
   var searches = req.query.searchword;
@@ -60,16 +75,16 @@ router.get('/search', function(req, res, next){
 	bat.on('exit', (code) => {
     	console.log(`Child exited with code ${code}`);
         bat.kill();
-       
+
         var json;
         var xml2js = require('xml2js'); // XML2JS Module
         var parser = new xml2js.Parser({ignoreAttrs : false, mergeAttrs : true, explicitArray : false, normalizeTags : true, preserveChildrenOrder : true}); // Creating XML to JSON parser object
-        // Reading and Parsing the file 
+        // Reading and Parsing the file
         fs.readFile(outputFile, function(err, data) {
             parser.parseString(data, function (err, result) {
                 json = JSON.stringify(result);
                 json = JSON.parse(json);
-                
+
                   //res.json({Search: req.query.search})
                 console.log(json.doc.s.w);
                 res.render('sentence', {data:json.doc.s.w});
@@ -79,7 +94,6 @@ router.get('/search', function(req, res, next){
         });
 	});
 });
-
 
 router.post('/word', function(req, res, next){
   var key = req.body.req;
@@ -103,6 +117,55 @@ router.post('/word', function(req, res, next){
   });
 });
 
+router.get('/searchav', function(req, res, next){
+  var searches = req.query.searchword;
+  console.log('Param:' + searches);
+  console.log("Successful");
+  var fs = require('fs');
+  var file = 'short.txt';
+  var wstream = fs.createWriteStream(file);
+  wstream.write(searches);
+	wstream.end();
+
+  var arguments = [
+    'models/english-left3words-distsim.tagger',
+    file,
+    outputFileav
+  ];
+
+  const spawn = require('child_process').spawn;
+	const bat = spawn('stanford-postagger.bat', arguments);
+
+  bat.stdout.on('data', (data) => {
+	    console.log(data.toString());
+	});
+
+	bat.stderr.on('data', (data) => {
+	    console.log(data.toString());
+	});
+
+  bat.on('exit', (code) => {
+    console.log(`Child exited with code ${code}`);
+    bat.kill();
+
+    var json;
+    var xml2js = require('xml2js'); // XML2JS Module
+    var parser = new xml2js.Parser({ignoreAttrs : false, mergeAttrs : true, explicitArray : false, normalizeTags : true, preserveChildrenOrder : true});
+    fs.readFile(outputFileav, function(err, data) {
+      parser.parseString(data, function (err, result) {
+
+          json = JSON.stringify(result);
+          json = JSON.parse(json);
+          console.log(json.pos.sentence);
+            //res.json({Search: req.query.search})
+          console.log('Done');
+          //res.redirect('/top?search=' + req.body.searchword);
+      });
+    });
+  });
+
+});
+
 var users;
 
 // =====================================
@@ -110,7 +173,6 @@ var users;
 // =====================================
 // show the login form
 router.get('/login', function(req, res) {
-
   // render the page and pass in any flash data if it exists
   res.render('login', { message: req.flash('loginMessage') });
 });
@@ -127,14 +189,30 @@ router.get('/success', function(req, res){
 router.post('/login', function(req, res, next) {
   passport.authenticate('local-login', function(err, user, info) {
     if (err) { return next(err); }
-    if (!user) { return res.redirect('/login'); }
+    if (!user) {
+      console.log("login failed");
+      return res.redirect('/login');
+    }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       users = user.username;
       return res.redirect('/success');
-
     });
   })(req, res, next)
+});
+
+router.get('/test', function(req, res, next){
+  pool.getConnection(function(err, connection){
+    connection.query('select w.wordid from word w where w.word=' + '"\ta\t"', function(error, results, fields){
+      if(error){
+        console.log('query error');
+        return;
+      }
+      console.log('Successful query');
+      console.log(results);
+    });
+    connection.release();
+  });
 });
 
 // process the login form
@@ -143,7 +221,6 @@ router.post('/login', function(req, res, next) {
 //         failureRedirect : '/login', // redirect back to the signup page if there is an error
 //         failureFlash : true // allow flash messages
 // }));
-
 // =====================================
 // SIGNUP ==============================
 // =====================================
@@ -178,7 +255,6 @@ router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-
 
 module.exports = router;
 

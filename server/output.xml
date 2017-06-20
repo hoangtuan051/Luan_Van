@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pos>
+<sentence id="0">
+  <word wid="0" pos="DT">this</word>
+  <word wid="1" pos="VBZ">is</word>
+  <word wid="2" pos="PRP$">my</word>
+  <word wid="3" pos="NN">teacher</word>
+  <word wid="4" pos=".">.</word>
+</sentence>
+<sentence id="1">
+  <word wid="0" pos="PRP">She</word>
+  <word wid="1" pos="VBZ">is</word>
+  <word wid="2" pos="JJ">beautiful</word>
+</sentence>
+</pos>

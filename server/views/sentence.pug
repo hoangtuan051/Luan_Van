@@ -58,7 +58,7 @@ html(lang='en')
               a.english(href='#') Sentence Parsing
               a.vietnam(href='#') Dịch câu
             li
-              a.english(href='#') Word Lists & Quiz
+              a.english(href='/quizz') Word Lists & Quiz
               a.vietnam(href='#') List từ & Quiz
             li
               a.english(href='#') Word Frequency
@@ -88,7 +88,7 @@ html(lang='en')
         .col-sm-2
         .col-sm-10
           .searchframe(style='border-color: gray;border-style: solid;border-radius: 5px;border-width:2px;')
-            form(action='/search' method='get' accept-charset='utf-8' id='search-form')
+            form(action='/searchav' method='get' accept-charset='utf-8' id='search-form')
               div
                 input#sentence_parse.searchbox(type='text', name='searchword', autofocus='yes', placeholder='Enter sentence', autocomplete='off')
                 span.search_select
@@ -106,8 +106,7 @@ html(lang='en')
             input(type='hidden', name='myParameterName', value='myParameterValue')
             input(type='submit', style='display: none')
         #blocks
-      
-
+    
         script(type='text/javascript').
             (function(){
               
@@ -153,11 +152,8 @@ html(lang='en')
                     $("blocks").empty();
                     var t;
                    
-                    for(var i = 0; i < data.length; i++){
-
-                     
+                    for(var i = 0; i < data.length; i++){         
                       if(data[i].word == request){
-
                         var posdiv = document.createElement('div');
                         posdiv.setAttribute('class', 'pos');
                         t = document.createTextNode(data[i].pos);
@@ -172,18 +168,15 @@ html(lang='en')
                         
                         if(data[i].example != null){
                           var temp = data[i].example;
-                          var str = temp.split('/');
-                          
+                          var str = temp.split('/');                          
                           if(str.length > 1){
                             for(var j = 0; j < str.length; j++){
                               var dat = str[j].split(';');
-
                               var examplediv = document.createElement('div');
                               examplediv.setAttribute('class', 'exampled');
                               t = document.createTextNode(dat[0]);
                               examplediv.appendChild(t);
                               document.getElementById('blocks').appendChild(examplediv);
-
                               var translatediv = document.createElement('div');
                               translatediv.setAttribute('class', 'translated');
                               t = document.createTextNode(dat[1]);
@@ -191,11 +184,9 @@ html(lang='en')
                               document.getElementById('blocks').appendChild(translatediv);                            
                             }                                                   
                           }
-                          else{
-                            
+                          else{                          
                             var dat = str[0].split(';');
-                            if(dat.length > 1){
-                              
+                            if(dat.length > 1){                          
                               var examplediv = document.createElement('div');
                               examplediv.setAttribute('class', 'exampled');
                               t = document.createTextNode(dat[0]);
@@ -209,17 +200,9 @@ html(lang='en')
                               document.getElementById('blocks').appendChild(translatediv);
                             }
                           }
-
-                        }
-                        
-                      }
-                      
+                        }                  
+                      }                      
                     }
-                    
-                   
-                    //$('#res').html(resfull);
-                   
-                    //window.location.reload('/');
                   },
                   error: function(jqXHR, textStatus, err){
                     alert('text status '+textStatus+', err '+err);

@@ -33,7 +33,7 @@
       e.preventDefault();
 
       // Suspend click listener during fade animation
-      if(quiz.is(':animated')) {        
+      if(quiz.is(':animated')) {
         return false;
       }
       choose();
@@ -80,12 +80,10 @@
       $(this).removeClass('active');
     });
 
-    // Creates and returns the div that contains the questions and 
+    // Creates and returns the div that contains the questions and
     // the answer selections
     function createQuestionElement(index) {
-      var qElement = $('<div>', {
-        id: 'question'
-      });
+      var qElement = $('<div>', {id: 'question'});
 
       var header = $('<h2>Question ' + (index + 1) + ':</h2>');
       qElement.append(header);
@@ -159,7 +157,6 @@
           numCorrect++;
         }
       }
-
       score.append('You got ' + numCorrect + ' questions out of ' + questions.length + ' right!!!');
       return score;
     }
