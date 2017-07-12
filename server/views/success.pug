@@ -75,8 +75,17 @@ html(lang='en')
                   li
                     a(onclick='ToVietNam();') Việt Nam
             li
-              a(href="/logout")
-                p #{info}
+              .dropdown
+                button#lang.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', style='outline: none;border: none;background-color: black;margin: 7px;')
+                  | #{info}
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href='#') Profile
+                  li
+                    a(href='/logout') Logout
+              //a(href="/logout")
+                //span #{info}
     .container-fluid.text-center(style='margin-top: 40px;')
       .row(style='height: 60px')
         .col-sm-2

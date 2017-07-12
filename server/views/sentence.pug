@@ -109,7 +109,7 @@ html(lang='en')
     
         script(type='text/javascript').
             (function(){
-              
+              var posclick;
               var user = !{JSON.stringify(data)};
               var t;
               if(user.length > 0){
@@ -149,17 +149,64 @@ html(lang='en')
                         myNode.removeChild( fc );
                         fc = myNode.firstChild;
                     }
+                  
                     $("blocks").empty();
                     var t;
-                   
+                                  
+                    function existedPos(type){
+                      for(var j = 0; j < type; j++){
+                        if(data[j].pos === data[type].pos && data[j].word === data[type].word)
+                          return true;
+                      }
+                      return false;
+                    }
+                    
+                    function sortPos(){
+                    
+                      if(posclick == "Np" || posclick == "Nc" || posclick == "Nu" || posclick == "M" || posclick == "N" || posclick == "P")
+                        posclick = "noun";
+                      else if(posclick == "V")
+                        posclick = "verb";
+                      else if(posclick == "A")
+                        posclick = "adj";
+                      else if(posclick == "R")
+                        posclick = "adv";
+                                      
+                      for(var i = 0; i < data.length; i++){
+                        if(data[i].word === request){
+                          if(data[i].pos.trim() === posclick){                        
+                            var temp = data[i].pos;
+                            var temp1 = data[i].word;
+                            var temp2 = data[i].example;
+                            var temp3 = data[i].mean;
+                            
+                            data[i].pos = data[0].pos;
+                            data[i].word = data[0].word;
+                            data[i].example = data[0].example;
+                            data[i].mean = data[0].mean;
+                            
+                            data[0].pos = temp;
+                            data[0].word = temp1;
+                            data[0].example = temp2;
+                            data[0].mean = temp3;
+                            break;
+                          }                          
+                        }
+                      }                                        
+                    }
+                    
+                    sortPos();
+                    
                     for(var i = 0; i < data.length; i++){         
-                      if(data[i].word == request){
-                        var posdiv = document.createElement('div');
-                        posdiv.setAttribute('class', 'pos');
-                        t = document.createTextNode(data[i].pos);
-                        posdiv.appendChild(t);
-                        document.getElementById('blocks').appendChild(posdiv);
-
+                      if(data[i].word == request){                        
+                        if(existedPos(i) === false){
+                          var posdiv = document.createElement('div');
+                          posdiv.setAttribute('class', 'pos');
+                          t = document.createTextNode(data[i].pos);
+                          posdiv.appendChild(t);
+                          document.getElementById('blocks').appendChild(posdiv);
+                        }
+                        
                         var meandiv = document.createElement('div');
                         meandiv.setAttribute('class', 'explanation');
                         t = document.createTextNode(data[i].mean);
@@ -177,11 +224,13 @@ html(lang='en')
                               t = document.createTextNode(dat[0]);
                               examplediv.appendChild(t);
                               document.getElementById('blocks').appendChild(examplediv);
-                              var translatediv = document.createElement('div');
-                              translatediv.setAttribute('class', 'translated');
-                              t = document.createTextNode(dat[1]);
-                              translatediv.appendChild(t);
-                              document.getElementById('blocks').appendChild(translatediv);                            
+                              if(dat[1] != null){
+                                var translatediv = document.createElement('div');
+                                translatediv.setAttribute('class', 'translated');
+                                t = document.createTextNode(dat[1]);
+                                translatediv.appendChild(t);
+                                document.getElementById('blocks').appendChild(translatediv);
+                              }                            
                             }                                                   
                           }
                           else{                          
@@ -192,12 +241,13 @@ html(lang='en')
                               t = document.createTextNode(dat[0]);
                               examplediv.appendChild(t);
                               document.getElementById('blocks').appendChild(examplediv);
-
-                              var translatediv = document.createElement('div');
-                              translatediv.setAttribute('class', 'translated');
-                              t = document.createTextNode(dat[1]);
-                              translatediv.appendChild(t);
-                              document.getElementById('blocks').appendChild(translatediv);
+                              if(dat[1] != null){
+                                var translatediv = document.createElement('div');
+                                translatediv.setAttribute('class', 'translated');
+                                t = document.createTextNode(dat[1]);
+                                translatediv.appendChild(t);
+                                document.getElementById('blocks').appendChild(translatediv);
+                              }
                             }
                           }
                         }                  
@@ -209,9 +259,10 @@ html(lang='en')
                   }
                 });
               };
-
+              
               $('.RD').click(function(){
-                //alert($(this).html());
+                //alert($(this).attr('title'));
+                posclick = $(this).attr('title');
                 $('.search_word').html($(this).html());          
                 $('input[name="myParameterName"]').val($(this).html());
                 var request = $('input[name="myParameterName"]').val();

@@ -13,7 +13,7 @@ html
       .col-sm-6.col-sm-offset-3
         h1
           span.fa.fa-sign-in
-          |  Signup
+          |  Sign up
         - var length = message.length
         // show any messages that come back with authentication
         - if (length > 0 ){
@@ -23,17 +23,29 @@ html
         // LOGIN FORM
         form(action='/register', method='post')
           .form-group
+            label Fullname
+            input.form-control(type='text', name='fullname')
+          .form-group
             label Username
             input.form-control(type='text', name='username')
           .form-group
             label Password
             input.form-control(type='password', name='password')
-          button.btn.btn-warning.btn-lg(type='submit') Signup
+          .form-group
+            label Confirm password
+            input.form-control(type='password', name='confirm-password')          
+          .form-group
+            label Phone
+            input.form-control(type='text', name='phone')
+          .form-group
+            label Address
+            input.form-control(type='text', name='address')
+          button.btn.btn-warning.btn-lg(type='submit') Sign up
         hr
         p
           | Already have an account? 
           a(href='/login') Login
         p
           | Or go 
-          a(href='/') home
+          a(href='/') H ome
           | .

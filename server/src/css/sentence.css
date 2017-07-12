@@ -24,11 +24,11 @@
 	cursor: pointer;
 }
 .search_word{
-	font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    position: relative;
-    top: -10px;
+	font-size: 32px;
+  font-weight: bold;
+  color: #B8A411;
+  position: relative;
+  top: -10px;
 }
 #blocks{
 	padding-right: 10px;
@@ -38,8 +38,9 @@
 }
 .pos{
 	font-style: italic;
-    font-size: 1.25em;
-    color: #444;
+  font-size: 1.25em;
+  color: blue;
+	margin-top: 10px;
 }
 .explanation{
 	font-size: 1.2em;
@@ -49,9 +50,9 @@
 }
 .exampled{
 	margin-left: 18px;
-	color: blue;
+	color: #CC3300;
 }
 .translated{
 	margin-left: 18px;
-	color: gray;
+	color: #74726D;
 }

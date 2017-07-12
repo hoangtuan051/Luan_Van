@@ -6,6 +6,8 @@ var router = express.Router();
 var path = require('path');
 var mysql = require('mysql');
 var passport = require('passport');
+var checkWord = require('check-word'),
+  words       = checkWord('en');
 
 // var connection = mysql.createConnection({
 //    host     : 'localhost',
@@ -21,13 +23,14 @@ var pool = mysql.createPool({
   database        : 'dictionaryclc'
 });
 
-
 var outputFile = '5.tagged.xml';
 var outputFileav = 'output.xml';
+var checked = true;
+var users;
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
-  res.render('sentence');
+  res.render('sentences');
 });
 
 router.get('/quizz', function(req, res, next){
@@ -100,19 +103,33 @@ router.post('/word', function(req, res, next){
   console.log("key:" + key);
 
   pool.getConnection(function(err, connection){
-    connection.query('select v.word ,m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + key + '"' + ', BINARY))', function (error, results, fields) {
-      if (error) {
-        console.log('Error in the query');
-        return;
-      }
-      console.log('Successful query');
-      for(var i = 0; i < results.length; i++){
-        if(results[i].word === key && results[i].example != null)
-         console.log(results[i].example);
-      }
-
-      res.send(results);
-    });
+    if(checked === false){
+      connection.query('select v.word ,m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + key + '"' + ', BINARY))', function (error, results, fields) {
+        if (error) {
+          console.log('Error in the query');
+          return;
+        }
+        console.log('Successful query 1');
+        for(var i = 0; i < results.length; i++){
+          if(results[i].word === key && results[i].example != null)
+           console.log(results[i].example);
+        }
+        res.send(results);
+      });
+    }
+    else{
+      connection.query('select w.word, w.pos, m.mean, m.example from word w, meaningev m where w.wordid = m.wordid and w.word=' + '"' + key  + '"', function(error, results, fields){
+        if(error){
+          console.log('query error');
+          return;
+        }
+        console.log('Successful query');
+        for(var i = 0; i < results.length; i++){
+           console.log(results[i].word + results[i].pos);
+        }
+        res.send(results);
+      });
+    }
     connection.release();
   });
 });
@@ -121,57 +138,107 @@ router.get('/searchav', function(req, res, next){
   var searches = req.query.searchword;
   console.log('Param:' + searches);
   console.log("Successful");
+
+  var temp = searches.split(' ');
+  for(var i = 0; i < temp.length; i++){
+    if(words.check(temp[i]) === false && temp[i].length > 1)
+    {
+      console.log("viet");
+      checked = false;
+      break;
+    }
+    else{
+      console.log("anh");
+      checked = true;
+    }
+  }
+
   var fs = require('fs');
-  var file = 'short.txt';
+  var file = 'file.txt';
   var wstream = fs.createWriteStream(file);
   wstream.write(searches);
 	wstream.end();
 
-  var arguments = [
-    'models/english-left3words-distsim.tagger',
-    file,
-    outputFileav
-  ];
+  if(checked === true){
+    var arguments = [
+      'models/english-left3words-distsim.tagger',
+      file,
+      outputFileav
+    ];
 
-  const spawn = require('child_process').spawn;
-	const bat = spawn('stanford-postagger.bat', arguments);
+    const spawn = require('child_process').spawn;
+  	const bat = spawn('stanford-postagger.bat', arguments);
 
-  bat.stdout.on('data', (data) => {
-	    console.log(data.toString());
-	});
+    bat.stdout.on('data', (data) => {
+  	    console.log(data.toString());
+  	});
 
-	bat.stderr.on('data', (data) => {
-	    console.log(data.toString());
-	});
+  	bat.stderr.on('data', (data) => {
+  	    console.log(data.toString());
+  	});
 
-  bat.on('exit', (code) => {
-    console.log(`Child exited with code ${code}`);
-    bat.kill();
+    bat.on('exit', (code) => {
+      console.log(`Child exited with code ${code}`);
+      bat.kill();
 
-    var json;
-    var xml2js = require('xml2js'); // XML2JS Module
-    var parser = new xml2js.Parser({ignoreAttrs : false, mergeAttrs : true, explicitArray : false, normalizeTags : true, preserveChildrenOrder : true});
-    fs.readFile(outputFileav, function(err, data) {
-      parser.parseString(data, function (err, result) {
-
-          json = JSON.stringify(result);
-          json = JSON.parse(json);
-          console.log(json.pos.sentence);
-            //res.json({Search: req.query.search})
-          console.log('Done');
-          //res.redirect('/top?search=' + req.body.searchword);
+      var json;
+      var xml2js = require('xml2js'); // XML2JS Module
+      var parser = new xml2js.Parser({ignoreAttrs : false, mergeAttrs : true, explicitArray : false, normalizeTags : true, preserveChildrenOrder : true});
+      fs.readFile(outputFileav, function(err, data) {
+        parser.parseString(data, function (err, result) {
+            json = JSON.stringify(result);
+            json = JSON.parse(json);
+            console.log(json.pos.sentence.word);
+            res.render('sentences', {data:json.pos.sentence.word});
+              //res.json({Search: req.query.search})
+            console.log('Done');
+            //res.redirect('/top?search=' + req.body.searchword);
+        });
       });
     });
-  });
+  }
+  else{
+    var arguments = [
+      '-i', file,
+      '-o', outputFile
+    ];
 
+    const spawn = require('child_process').spawn;
+    const bat = spawn('vnTagger.bat', arguments);
+
+    bat.stdout.on('data', (data) => {
+        console.log(data.toString());
+    });
+
+
+    bat.stderr.on('data', (data) => {
+        console.log(data.toString());
+    });
+
+    bat.on('exit', (code) => {
+        console.log(`Child exited with code ${code}`);
+          bat.kill();
+
+          var json;
+          var xml2js = require('xml2js'); // XML2JS Module
+          var parser = new xml2js.Parser({ignoreAttrs : false, mergeAttrs : true, explicitArray : false, normalizeTags : true, preserveChildrenOrder : true}); // Creating XML to JSON parser object
+          // Reading and Parsing the file
+          fs.readFile(outputFile, function(err, data) {
+              parser.parseString(data, function (err, result) {
+                  json = JSON.stringify(result);
+                  json = JSON.parse(json);
+
+                    //res.json({Search: req.query.search})
+                  console.log(json.doc.s.w);
+                  res.render('sentences', {data:json.doc.s.w});
+                  console.log('Done');
+                  //res.redirect('/top?search=' + req.body.searchword);
+              });
+          });
+    });
+  }
 });
 
-var users;
-
-// =====================================
-// LOGIN ===============================
-// =====================================
-// show the login form
 router.get('/login', function(req, res) {
   // render the page and pass in any flash data if it exists
   res.render('login', { message: req.flash('loginMessage') });
@@ -194,16 +261,21 @@ router.post('/login', function(req, res, next) {
       return res.redirect('/login');
     }
     req.logIn(user, function(err) {
-      if (err) { return next(err); }
-      users = user.username;
+      if (err) {
+        return next(err);
+      }
+      users = user.fullname;
+      //console.log("fullname " + user.fullname);
       return res.redirect('/success');
     });
   })(req, res, next)
 });
 
 router.get('/test', function(req, res, next){
+  var key = req.body.req;
+  console.log("key:" + key);
   pool.getConnection(function(err, connection){
-    connection.query('select w.wordid from word w where w.word=' + '"\ta\t"', function(error, results, fields){
+    connection.query('select w.word, w.pos, m.mean, m.example from word w, meaningev m where w.wordid = m.wordid and w.word=' + '"\t' + key + '\t"', function(error, results, fields){
       if(error){
         console.log('query error');
         return;
@@ -236,6 +308,39 @@ router.post('/register', passport.authenticate('local-signup', {
   failureRedirect : '/register', // redirect back to the signup page if there is an error
   failureFlash : true // allow flash messages
 }));
+
+// route for facebook authentication and login
+// different scopes while logging in
+router.get('/login/facebook',
+  passport.authenticate('facebook', { scope : 'email' }
+));
+
+// handle the callback after facebook has authenticated the user
+router.get('/login/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect : '/sentences',
+    failureRedirect : '/'
+  })
+);
+
+// route for twitter authentication and login
+// different scopes while logging in
+router.get('/login/twitter',
+  passport.authenticate('twitter')
+);
+
+// handle the callback after facebook has authenticated the user
+router.get('/login/twitter/callback',
+  passport.authenticate('twitter', {
+    successRedirect : '/sentences',
+    failureRedirect : '/'
+  })
+);
+
+/* GET Twitter View Page */
+// router.get('/twitter', isAuthenticated, function(req, res){
+//   res.render('sentences', { user: req.user });
+// });
 
 // =====================================
 // PROFILE SECTION =========================

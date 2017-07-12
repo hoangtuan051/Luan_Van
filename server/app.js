@@ -28,12 +28,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src')));
 app.use(session({
 	secret: 'max',
+	key: 'sid',
 	resave: true,
-	saveUninitialized: false,
+	saveUninitialized: false
  } )); // session secret
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash()); 
+app.use(flash());
 passport.authenticate('session');
 app.use('/', index);
 app.use('/users', users);
