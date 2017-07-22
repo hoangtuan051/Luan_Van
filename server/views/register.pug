@@ -6,8 +6,14 @@ html
     link(href='https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css', rel='stylesheet')
     script(src='http://code.jquery.com/jquery-1.11.1.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js")
     style.
       body    { padding-top:80px; }
+      label.error{
+        color: red;
+        font-style: italic;
+        font-family: sans-serif;
+      }
   body
     .container
       .col-sm-6.col-sm-offset-3
@@ -21,26 +27,70 @@ html
         - }
         
         // LOGIN FORM
-        form(action='/register', method='post')
+        form#registers(action='/register', method='post', name='register')
           .form-group
-            label Fullname
-            input.form-control(type='text', name='fullname')
+            label Fullname (*)
+            input.form-control(type='text', name='fullname', placeholder='Enter your fullname',  minlength="2", required)
           .form-group
-            label Username
-            input.form-control(type='text', name='username')
+            label Email (*)
+            input.form-control(type='email', name='username', placeholder='abc@gmail.com', required)
           .form-group
-            label Password
-            input.form-control(type='password', name='password')
+            label Password (*)
+            input.form-control#password(type='password', name='password', placeholder='Enter a password', minlength="6", required)
           .form-group
-            label Confirm password
-            input.form-control(type='password', name='confirm-password')          
+            label Confirm password (*)
+            input.form-control(type='password', name='confirm_password', placeholder='Confirm your password', minlength="6", required)          
           .form-group
             label Phone
-            input.form-control(type='text', name='phone')
+            input.form-control(type='text', name='phone', placeholder='Enter a phone string')
           .form-group
             label Address
-            input.form-control(type='text', name='address')
+            input.form-control(type='text', name='address', placeholder='Enter your address')
           button.btn.btn-warning.btn-lg(type='submit') Sign up
+        script(type='text/javascript').
+          $(document).ready(function() {
+      
+              $("#registers").validate({
+                rules:{
+                    fullname:{
+                      required: true,
+                      minlength: 2
+                    },
+                    username: {
+                      required: true,
+                      email: true
+                    },
+                    password:{
+                      required: true,
+                      minlength: 6
+                    },
+                    confirm_password:{
+                      required: true,
+                      minlength: 6,
+                      equalTo: "#password"
+                    }
+                },
+                messages:{
+                  fullname: {
+                    required: "Please enter your name",
+                    minlength: "Name must consist of at least 2 characters"
+                  },
+                  username:{
+                    required: "Please enter a valid email", 
+                    email: "Email is invalid"
+                  },
+                  password: {
+                    required: "Please provide a password",
+                    minlength: "Password must consist of at least 6 characters"
+                  },
+                  confirm_password:{
+                    required:"Please provide a password",
+                    minlength: "Password must consist of at least 6 characters",
+                    equalTo: "Please enter the same password as bove"
+                  }
+                }
+              });
+          });
         hr
         p
           | Already have an account? 

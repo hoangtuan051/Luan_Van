@@ -48,56 +48,6 @@ router.get('/quizz', function(req, res, next){
   });
 });
 
-router.get('/search', function(req, res, next){
-  var searches = req.query.searchword;
-	console.log("params:" + req.query.searchword);
-	console.log("Success");
-	var fs = require('fs');
-	var file = 'file.txt';
-	var wstream = fs.createWriteStream(file);
-	wstream.write(searches);
-	wstream.end();
-
-	var arguments = [
-		'-i', file,
-		'-o', outputFile
-	];
-
-	const spawn = require('child_process').spawn;
-	const bat = spawn('vnTagger.bat', arguments);
-
-	bat.stdout.on('data', (data) => {
-	    console.log(data.toString());
-	});
-
-
-	bat.stderr.on('data', (data) => {
-	    console.log(data.toString());
-	});
-
-	bat.on('exit', (code) => {
-    	console.log(`Child exited with code ${code}`);
-        bat.kill();
-
-        var json;
-        var xml2js = require('xml2js'); // XML2JS Module
-        var parser = new xml2js.Parser({ignoreAttrs : false, mergeAttrs : true, explicitArray : false, normalizeTags : true, preserveChildrenOrder : true}); // Creating XML to JSON parser object
-        // Reading and Parsing the file
-        fs.readFile(outputFile, function(err, data) {
-            parser.parseString(data, function (err, result) {
-                json = JSON.stringify(result);
-                json = JSON.parse(json);
-
-                  //res.json({Search: req.query.search})
-                console.log(json.doc.s.w);
-                res.render('sentence', {data:json.doc.s.w});
-                console.log('Done');
-                //res.redirect('/top?search=' + req.body.searchword);
-            });
-        });
-	});
-});
-
 router.post('/word', function(req, res, next){
   var key = req.body.req;
   console.log("key:" + key);
@@ -189,7 +139,7 @@ router.get('/searchav', function(req, res, next){
             json = JSON.stringify(result);
             json = JSON.parse(json);
             console.log(json.pos.sentence.word);
-            res.render('sentences', {data:json.pos.sentence.word});
+            res.render('sentences', {data:json.pos.sentence.word, checkEn: checked});
               //res.json({Search: req.query.search})
             console.log('Done');
             //res.redirect('/top?search=' + req.body.searchword);
@@ -230,7 +180,7 @@ router.get('/searchav', function(req, res, next){
 
                     //res.json({Search: req.query.search})
                   console.log(json.doc.s.w);
-                  res.render('sentences', {data:json.doc.s.w});
+                  res.render('sentences', {data:json.doc.s.w, checkEn: checked});
                   console.log('Done');
                   //res.redirect('/top?search=' + req.body.searchword);
               });
@@ -269,22 +219,6 @@ router.post('/login', function(req, res, next) {
       return res.redirect('/success');
     });
   })(req, res, next)
-});
-
-router.get('/test', function(req, res, next){
-  var key = req.body.req;
-  console.log("key:" + key);
-  pool.getConnection(function(err, connection){
-    connection.query('select w.word, w.pos, m.mean, m.example from word w, meaningev m where w.wordid = m.wordid and w.word=' + '"\t' + key + '\t"', function(error, results, fields){
-      if(error){
-        console.log('query error');
-        return;
-      }
-      console.log('Successful query');
-      console.log(results);
-    });
-    connection.release();
-  });
 });
 
 // process the login form

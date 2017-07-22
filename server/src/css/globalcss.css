@@ -57,10 +57,10 @@ span.search_select{
 .nav-tabs  li.active > a,
 .nav-tabs  li.active > a:hover,
 .nav-tabs  li.active > a:focus{
-    background-color: #50A3AC; 
+    background-color: #50A3AC;
     outline: none;
-    border: none; 
-} 
+    border: none;
+}
 
 .english{
 }
@@ -155,4 +155,3 @@ span.search_select{
 	}
 
 }
-

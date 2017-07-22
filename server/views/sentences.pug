@@ -13,6 +13,7 @@ html(lang='en')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='https://code.responsivevoice.org/responsivevoice.js')
+    script(src="typeahead.min.js", type="text/javascript")
     script(src='js/soundmanager2-nodebug-jsmin.js')
     script(src='js/sentence_parse.js')
     style.
@@ -96,9 +97,6 @@ html(lang='en')
                 span.search_select
                   button.search_button(type='submit', value='submit')
                     i.fa.fa-search(aria-hidden='true')
-                  select.search_option
-                    option(value='English') English
-                    option(value='VietNam') Viet Nam
       #results
       .meanings
         #rs_title
@@ -109,10 +107,11 @@ html(lang='en')
             input(type='hidden', name='myParameterName', value='myParameterValue')
             input(type='submit', style='display: none')
         #blocks
-    
+          
         script(type='text/javascript').
             (function(){
               var posclick;
+              var checkEN = #{checkEn};
               var user = !{JSON.stringify(data)};
               var t;
               if(user.length > 0){
@@ -425,12 +424,12 @@ html(lang='en')
                 $('.search_word').html($(this).html());          
                 $('input[name="myParameterName"]').val($(this).html());
                 var request = $('input[name="myParameterName"]').val();
-                getdata(request);      
+                getdata(request.toLowerCase());      
               }); 
               
               $('#sound').click(function(){
                 
-                if(/^[A-Z][a-z]*$/i.test($('.search_word').html())){
+                if(checkEN){
                   responsiveVoice.speak($('.search_word').html());
                 }
                 else{            
@@ -439,7 +438,7 @@ html(lang='en')
               });
             })();
 
-    footer.container-fluid.text-center.navbar-fixed-bottom(style='opacity: 0.75;')
+    footer.container-fluid.text-center(style='opacity: 0.75;')
       p University of Science
 
     // Login

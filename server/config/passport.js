@@ -57,7 +57,6 @@ module.exports = function(passport) {
                 else {
                     // if there is no user with that username
                     // create the user
-                    console.log("dsds" + fullname);
                     var newUserMysql = {
                         fullname: fullname,
                         username: username,

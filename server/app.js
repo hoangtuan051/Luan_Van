@@ -31,7 +31,7 @@ app.use(session({
 	key: 'sid',
 	resave: true,
 	saveUninitialized: false
- } )); // session secret
+ })); // session secret
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
