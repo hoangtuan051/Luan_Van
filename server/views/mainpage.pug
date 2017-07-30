@@ -4,16 +4,54 @@ html(lang='en')
     title Smart Dictionary
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', type='text/css', media='screen', href='./css/mainpage.css')
+    link(rel='stylesheet', type='text/css', href='./css/globalcss.css')
+    link(rel='stylesheet', type='text/css', href='./css/typehead.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-    link(rel='stylesheet', type='text/css', media='screen', href='css/mainpage.css')
-    link(rel='stylesheet', type='text/css', href='css/globalcss.css')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
-    script(src='js/mainpage.js')
-    script(src='js/translate.js')
-    
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js')
+    script(src='./js/mainpage.js', type='text/javascript')
+    script(src='./js/translate.js', type='text/javascript')
+    script(src='./js/typeahead.min.js', type='text/javascript')
+    script(type='text/javascript').
+      $(document).ready(function(){
+      
+          $('input.typeahead').typeahead({
+              name: 'typeahead',
+              remote: 'http://localhost:3000/search?key=%QUERY',
+              limit: 10
+          });
+          
+          var getdata = function(key, type){
+              $.ajax({
+                  url:'http://localhost:3000/' + type,
+                  type: 'GET',
+                  data: {req: key},
+                  success: function(data){
+                    
+                  },
+                  error: function(jqXHR, textStatus, err){
+                    alert('text status '+textStatus+', err '+err);
+                  }
+              });
+          };
+            
+          $('.searchbox').change(function(){
+              if($('.searchoption').find('option:selected').text() === "English"){
+                 $('#search-form').attr('action', '/searcheng');
+                 alert($('.searchbox').val());
+                 //getdata($('.searchbox').val(), '/searcheng');
+              }
+              else{
+                $('#search-form').attr('action', '/searchvie');
+                alert($('.searchbox').val());
+                //getdata($('.searchbox').val(), '/searchvie');
+              }
+          });    
+
+      });
     style.
       /* Remove the navbar's default margin-bottom and rounded borders */
       .navbar {
@@ -42,7 +80,8 @@ html(lang='en')
       }
       .row.content {height:auto;}
       }
-  body(ng-app='')
+      
+  body
     nav.navbar.navbar-inverse
       .container-fluid
         .navbar-header
@@ -50,15 +89,15 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='mainpage.html') Smart Dictionary
+          a.navbar-brand(href='/') Smart Dictionary
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             li.active
-              a.english(href='mainpage.html') Home
-              a.vietnam(href='mainpage.html') Trang Chủ
+              a.english(href='/') Home
+              a.vietnam(href='/') Trang Chủ
             li
-              a.english(href='#') Sentence Parsing
-              a.vietnam(href='#') Dịch câu
+              a.english(href='/sentences') Sentence Parsing
+              a.vietnam(href='/sentences') Dịch câu
             li
               a.english(href='#') Word Lists & Quiz
               a.vietnam(href='#') List từ & Quiz
@@ -77,11 +116,11 @@ html(lang='en')
                   li
                     a(onclick='ToVietNam();') Việt Nam
             li
-              a.english(href='#', data-toggle='modal', data-target='#login_signup')
+              a.english(href='/login', data-toggle='modal', data-target='#login_signup')
                 span.glyphicon.glyphicon-log-in
                 |  Login
             li
-              a.vietnam(href='#', data-toggle='modal', data-target='#login_signup')
+              a.vietnam(href='/login', data-toggle='modal', data-target='#login_signup')
                 span.glyphicon.glyphicon-log-in
                 |  Đăng nhập
     .container-fluid.text-center
@@ -89,101 +128,28 @@ html(lang='en')
         img(src='image/mainpage.png', style='width: 100%;height: 250px')
         #search
           .searchframe
-            // <form action="/search" method="get">
             div
-              form(action='/search', method='get', accept-charset='utf-8' id='search-form')
-                input#findBox.searchbox(type='text', name='searchword', autofocus='yes', placeholder='Search Word', autocomplete='off')
+              form#search-form(action='/searcheng', method='get', accept-charset='utf-8')
+                input#findBox.searchbox.typeahead(type='text', name='typeahead', autofocus='yes', spellcheck="false", placeholder='Search Word', autocomplete='off')
                 span.searchselect
                   button.searchbutton(type='submit', value='submit')
                     i.fa.fa-search(aria-hidden='true')
-                  select.searchoption
-                    option(value='English') English
-                    option(value='VietNam') Viet Nam
-             
-        #pos(ng-view='')
-          script(type='text/javascript').
-            (function(){
-              
-              var user = !{JSON.stringify(data)};
-     
-              if(user.length > 0){
-                var ul = document.createElement('ul');
-                ul.setAttribute('id','proList');
-                var t;
-                document.getElementById('pos').appendChild(ul);
-                for(var i = 0; i < user.length; i++){
-                  var li = document.createElement('li');
-                  li.setAttribute('class','item');
-                  li.style.display = "inline";
-                  li.style.padding = "10px";
-                  var a = document.createElement('a');
-                  a.setAttribute('class','wp');
-                  t = document.createTextNode(user[i]._);
-                  a.appendChild(t);
-                  
-                  //a.href = "http://example.com";
-                  li.appendChild(a);
-                  ul.appendChild(li);
-                }
-              }
-              else{
-                var ul = document.createElement('ul');
-                ul.setAttribute('id','proList');
-                $('#pos').append(ul);
-                var li = document.createElement('li');
-                li.setAttribute('class','item');
-                li.style.display = "inline";
-                li.style.padding = "10px";
-                var a = document.createElement('a');
-                a.setAttribute('class','wp');
-                var t = document.createTextNode(user._);
-                a.appendChild(t);
-                
-                //a.href = "http://example.com";
-                li.appendChild(a);
-                ul.appendChild(li);
-              }
-
-
-              var getdata = function(request){
-                $.ajax({
-                  url: 'http://localhost:3000/word',
-                  type: 'POST',
-                  data: {req: request},
-                  success: function(data){
-                   
-                    var resfull = '';
-                    for(var i = 0; i < data.length; i++){
-                      resfull += data[i].mean + '<br />';
-                      if(data[i].example == null){
-                        resfull += '<br />';
-                      }
-                      else
-                        resfull += data[i].example + '<br />';
-                    }
-                    
-                    //alert(resfull);
-                    $('#res').html(resfull);
-                   
-                    //window.location.reload('/');
-                  },
-                  error: function(jqXHR, textStatus, err){
-                    alert('text status '+textStatus+', err '+err);
-                  }
-                });
-              };
-
-              $('.wp').click(function(){
-                $('input[name="myParameterName"]').val($(this).html());
-                var request = $('input[name="myParameterName"]').val();
-                getdata(request);    
-              }); 
-            })();
-          
+                  select.searchoption(name='typedic')
+                    option(value='English', selected='selected') English
+                    option(value='VietNam') Viet Nam    
           form#myHiddenFormId(action='/word', method='post', style='display: none')
             input(type='hidden', name='myParameterName', value='myParameterValue')
             input(type='submit', style='display: none')
           p#res
+      #results
+        #blocks
+        script(type='text/javascript').
+            document.ready(function(){
+                var data = !{JSON.stringify(data)};
+                if(data != null){
+                  alert(data[0].word);
+                }
+          });
       .container-fluid(style='background-color: #EEF1F6;margin-bottom: 100px;')
         label.english(style='font-size: 20px;float: left;') Explore our features
         label.vietnam(style='font-size: 20px;float: left;') Các tính năng
@@ -205,7 +171,8 @@ html(lang='en')
               a(href='#')
                 img(src='image/Australia.jpg')
               a#imgFre.desc Word Frequency
-    footer.container-fluid.text-center.navbar-fixed-bottom(style='opacity: 0.75')
+          
+    footer.container-fluid.text-center(style='opacity: 0.75')
       p University of Science
     // Login
     #login_signup.modal.fade(tabindex='-1', role='dialog', aria-labelledby='login_signup', aria-hidden='true')

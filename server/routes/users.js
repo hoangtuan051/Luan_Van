@@ -7,4 +7,8 @@ router.get('/', function(req, res, next) {
   console.log("sdsdsd");
 });
 
+router.get('/sentences', function(req, res, next) {
+  res.render('sentences');
+});
+
 module.exports = router;

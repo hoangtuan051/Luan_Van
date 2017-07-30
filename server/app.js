@@ -9,6 +9,7 @@ var passport = require('passport');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
+var parse = require('./routes/parse');
 var mysql = require('mysql');
 var connection = require("express-myconnection");
 var session = require("express-session");
@@ -39,7 +40,7 @@ passport.authenticate('session');
 app.use('/', index);
 app.use('/users', users);
 app.use('/auth', auth);
-
+app.use('/sentences', parse);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

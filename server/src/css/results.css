@@ -1,0 +1,51 @@
+#results{
+	border-width: 100%;
+	min-height: 100px;
+  background-color: whitesmoke;
+  padding: 10px 15px;
+  margin-top: 30px;
+  text-align: left;
+}
+
+.meanings{
+	margin-top: 10px;
+	text-align: left;
+	border-top: 2px solid black;
+}
+#sound{
+	font-size: 3em;
+	cursor: pointer;
+}
+.search_word{
+	font-size: 32px;
+  font-weight: bold;
+  color: #B8A411;
+  position: relative;
+  top: -10px;
+}
+#blocks{
+	padding-right: 10px;
+	padding-top: 10px;
+	margin-top: 10px;
+	width: 100%;
+}
+.pos{
+	font-style: italic;
+  font-size: 1.25em;
+  color: blue;
+	margin-top: 10px;
+}
+.explanation{
+	  font-size: 1.2em;
+    line-height: 1.075em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.exampled{
+	margin-left: 18px;
+	color: #CC3300;
+}
+.translated{
+	margin-left: 18px;
+	color: #74726D;
+}

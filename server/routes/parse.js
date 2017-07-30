@@ -1,3 +1,5 @@
+// var express = require('express');
+// var router = express.Router();
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
@@ -152,7 +154,7 @@ router.post('/word', function(req, res, next){
   });
 });
 
-router.get('/searchav', function(req, res, next){
+router.get('/sentences/searchav', function(req, res, next){
   var searches = req.query.searchword;
   console.log('Param:' + searches);
   console.log("Successful");

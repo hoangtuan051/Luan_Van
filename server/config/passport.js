@@ -108,20 +108,44 @@ module.exports = function(passport) {
         })
     );
 
-    // passport.use(new FacebookStrategy({
-    //     clientID        : configAuth.facebookAuth.clientID,
-    //     clientSecret    : configAuth.facebookAuth.clientSecret,
-    //     callbackURL     : configAuth.facebookAuth.callbackURL
-    // },
-    // function(accessToken, refreshToken, profile, done) {
-    //   //asynchronous
-    //   process.nextTick(function () {
-    //     //Check whether the User exists or not using profile.id
-    //     //Further DB code.
-    //     return done(null, profile);
-    //   });
-    // })
-    // );
+    passport.use(new FacebookStrategy({
+        clientID        : configAuth.facebookAuth.clientID,
+        clientSecret    : configAuth.facebookAuth.clientSecret,
+        callbackURL     : configAuth.facebookAuth.callbackURL
+    },
+    //facebook will send back the token and profile
+    function(token, refreshToken, profile, done) {
+      //asynchronous
+      process.nextTick(function() {
+        //find the user in the database based on their facebook id
+        connection.query("SELECT * FROM social_account WHERE id = ?", [profile.id], function(err, rows){
+            //if there is an error, stop everthing and return that
+            //ie an error connecting to the database
+            if(err)
+                return done(err);
+            if(rows.length){
+                return done(null, rows[0]);//user found, return that user
+            }
+            else{ //if there is no user found with that facebook id, create them
+                var newUser = {
+                    id: profile.id,
+                    token: token,
+                    email: profile.emails[0].value,
+                    name: profile.name.givenName + ' ' + profile.name.familyName
+                };
+
+                var insertQuery = "INSERT INTO social_account (id, token, email, name) values (?,?,?,?)";
+                connection.query(insertQuery,[newUser.id, newUser.token, newUser.email, newUser.name],function(err) {
+                    if(err)
+                        throw err;
+                    //if successful, return new user
+                    return done(null, newUser);
+                });
+            }
+        });
+      });
+    })
+    );
 
   //   passport.use('twitter', new TwitterStrategy({
   //     consumerKey     : configAuth.twitterAuth.consumerKey,
@@ -133,35 +157,35 @@ module.exports = function(passport) {
   //   // User.findOne won't fire until we have all our data back from Twitter
   //     process.nextTick(function() {
   //
-  //       User.findOne({ 'twitter.id' : profile.id },
-  //         function(err, user) {
-  //         // if there is an error, stop everything and return that
-  //         // ie an error connecting to the database
-  //           if (err)
-  //             return done(err);
-  //
-  //           // if the user is found then log them in
-  //           if (user) {
-  //             return done(null, user); // user found, return that user
-  //           } else {
-  //              // if there is no user, create them
-  //              var newUser = new User();
-  //
-  //              // set all of the user data that we need
-  //              newUser.twitter.id = profile.id;
-  //              newUser.twitter.token = token;
-  //              newUser.twitter.username = profile.username;
-  //              newUser.twitter.displayName = profile.displayName;
-  //              newUser.twitter.lastStatus = profile._json.status.text;
-  //
-  //              // save our user into the database
-  //              newUser.save(function(err) {
-  //                if (err)
-  //                  throw err;
-  //                return done(null, newUser);
-  //              });
-  //           }
-  //        });
+  //       // User.findOne({ 'twitter.id' : profile.id },
+  //       //   function(err, user) {
+  //       //   // if there is an error, stop everything and return that
+  //       //   // ie an error connecting to the database
+  //       //     if (err)
+  //       //       return done(err);
+  //       //
+  //       //     // if the user is found then log them in
+  //       //     if (user) {
+  //       //       return done(null, user); // user found, return that user
+  //       //     } else {
+  //       //        // if there is no user, create them
+  //       //        var newUser = new User();
+  //       //
+  //       //        // set all of the user data that we need
+  //       //        newUser.twitter.id = profile.id;
+  //       //        newUser.twitter.token = token;
+  //       //        newUser.twitter.username = profile.username;
+  //       //        newUser.twitter.displayName = profile.displayName;
+  //       //        newUser.twitter.lastStatus = profile._json.status.text;
+  //       //
+  //       //        // save our user into the database
+  //       //        newUser.save(function(err) {
+  //       //          if (err)
+  //       //            throw err;
+  //       //          return done(null, newUser);
+  //       //        });
+  //       //     }
+  //       //  });
   //     });
   //   })
   // );
