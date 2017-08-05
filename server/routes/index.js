@@ -51,7 +51,7 @@ router.get('/searcheng', function(req, res, next){
       }
 
       if(results.length > 0)
-          res.render('result', {data: results});
+          res.render('result', {datadic: results});
       else
           res.render('noresult');
   });
@@ -68,19 +68,25 @@ router.get('/noresult', function(req, res){
 });
 
 router.get('/searchvie', function(req, res, next){
-  console.log("key " + req.params.typeahead);
+  console.log("key " + req.query.typeahead);
   pool.getConnection(function(err, connection){
-    connection.query('select v.word ,m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.params.typeahead + '"' + ', BINARY))', function (error, results, fields) {
+    connection.query('select v.word , v.pos, m.mean, m.example from meanva m, vaword v where m.wordid = v.wordid and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.query.typeahead + '"' + ', BINARY))', function (error, results, fields) {
       if (error) {
         console.log('Error in the query');
         return;
       }
+      var dataSend = [];
       console.log('Successful query 1');
       for(var i = 0; i < results.length; i++){
-        if(results[i].word === key && results[i].example != null)
-         console.log(results[i].example);
+        if(results[i].word === req.query.typeahead){
+          console.log(results[i].word);
+         dataSend.push(results[i]);
+       }
       }
-      res.send(results);
+      if(dataSend.length > 0)
+          res.render('result', {datadic: dataSend});
+      else
+          res.render('noresult');
   });
   connection.release();
   });
@@ -90,6 +96,21 @@ router.get('/search', function(req, res, next){
   console.log('test ' + req.query.key);
   pool.getConnection(function(err, connection){
     connection.query('SELECT word FROM word WHERE word LIKE "%' + req.query.key + '%"', function(error, results, fields){
+      if(error) throw err;
+      var data = [];
+      for(var i = 0; i < results.length; i++){
+        data.push(results[i].word);
+      }
+      res.send(JSON.stringify(data));
+    });
+    connection.release();
+  });
+});
+
+router.get('/suggest', function(req, res, next){
+  console.log('test ' + req.query.key);
+  pool.getConnection(function(err, connection){
+    connection.query('SELECT word FROM vaword WHERE word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.query.key + '"' + ', BINARY))', function(error, results, fields){
       if(error) throw err;
       var data = [];
       for(var i = 0; i < results.length; i++){
