@@ -2,36 +2,517 @@
 <!doctype html>
 <html>
 <head>
-	<title>Node Authentication</title>
+	<title>Profile</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel='stylesheet', type='text/css', href='css/style-responsive.css'>
 	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<style>
-		body 		{ padding-top:80px; word-wrap:break-word; }
+		body {
+			color: #797979;
+			background: #f1f2f7;
+			font-family: 'Open Sans', sans-serif;
+			padding: 0px !important;
+			margin: 0px !important;
+			font-size: 13px;
+			text-rendering: optimizeLegibility;
+			-webkit-font-smoothing: antialiased;
+			-moz-font-smoothing: antialiased;
+		}
+		#main-content {
+    		margin-left: 210px;
+		}
+		.white-bg{
+			background: #fff;
+			border-bottom: 1px solid #f1f2f7;
+		}
+		.header{
+			position: fixed;
+			left: 0;
+			right: 0;
+			z-index: 1002;
+			min-height: 60px;
+			padding: 0 15px;
+		}
+		.notify-row{
+			float: left;
+			margin-top: 15px;
+			margin-left: 92px;
+		}
+		.top-nav{
+			margin-top: 7px;
+		}
+		.search{
+			margin-top: 6px;
+			width: 20px;
+			border: 1px solid #fff;
+			box-shadow: none;
+			background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698956-icon-111-search-128.png') no-repeat 10px 8px;
+			padding: 0 5px 0 35px;
+			color: #000;
+			transition: all .3s ease;
+		}
+		.top-nav ul.top-menu > li {
+    	margin-left: 10px;
+		}
+		#top_menu .nav > li, ul.top-menu > li {
+    	float: left;
+		}
+
+		.sidebar-toggle-box {
+	    float: left;
+	    padding-right: 15px;
+	    margin-top: 20px;
+		}
+		.wrapper {
+	    display: inline-block;
+	    margin-top: 60px;
+	    padding: 15px;
+	    width: 100%;
+		}
+		a.logo {
+	    font-size: 21px;
+	    color: #2e2e2e;
+	    float: left;
+	    margin-top: 15px;
+	    text-transform: uppercase;
+		}
+		a, a:hover, a:focus {
+	    text-decoration: none;
+	    outline: none;
+		}
+		.pull-right{
+			float: right;
+		}
+		.sidebar-toggle-box .fa-bars {
+	    cursor: pointer;
+	    display: inline-block;
+	    font-size: 20px;
+		}
+		.top-nav ul.top-menu > li .dropdown-menu.logout {
+    	width: 268px !important;
+		}
+		.top-nav .dropdown-menu.extended.logout {
+		    top: 50px;
+		}
+		.top-nav li.dropdown .dropdown-menu {
+		    float: right;
+		    right: 0;
+		    left: auto;
+		}
+		@media screen and (-webkit-min-device-pixel-ratio:0){}
+			.dropdown-menu.extended {
+			    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.176) !important;
+			}
+		}
+		.dropdown-menu.extended {
+		    max-width: 300px !important;
+		    min-width: 160px !important;
+		    top: 42px;
+		    width: 235px !important;
+		    padding: 0;
+		    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.176) !important;
+		    border: none !important;
+		    border-radius: 4px;
+		    -webkit-border-radius: 4px;
+		}
+		.dropdown-menu.extended.logout > li {
+		    float: left;
+		    text-align: center;
+		    width: 33.3%;
+		}
+		ul li {
+    		list-style: none;
+		}
+		.dropdown-menu.extended.logout > li > a {
+    		color: #a4abbb;
+    		border-bottom: none !important;
+		}
+		.dropdown-menu.extended li a {
+    		padding: 15px 10px !important;
+    		width: 100%;
+    		display: inline-block;
+		}
+		.dropdown-menu.extended li a {
+    		border-bottom: 1px solid #EBEBEB !important;
+    		font-size: 12px;
+    		list-style: none;
+		}
+		.dropdown-menu.extended.logout > li:last-child > a {
+    		border-bottom: none !important;
+    		text-transform: uppercase;
+		}
+		.dropdown-menu.extended.logout > li > a:hover {
+    		background: none !important;
+		}
+		.dropdown-menu.extended li a:hover {
+    		background-color: #F7F8F9 !important;
+    		color: #2E2E2E;
+		}
+		.dropdown-menu.extended.logout > li:last-child {
+		    float: left;
+		    text-align: center;
+		    width: 100%;
+		    background: #a9d96c;
+		    border-radius: 0 0 3px 3px;
+		}
+		.site-footer {
+		    background: #5b6e84;
+		    color: #fff;
+		    padding: 10px 0;
+		}
+		.go-top {
+		    margin-right: 1%;
+		    float: right;
+		    background: rgba(255,255,255,.5);
+		    width: 20px;
+		    height: 20px;
+		    border-radius: 50%;
+		    -webkit-border-radius: 50%;
+		}
+		::selection {
+		    background: #FF6C60;
+		    color: #fff;
+		}
+		::-moz-selection {
+		    background: #FF6C60;
+		    color: #fff;
+		}
+		#container {
+	    width: 100%;
+	    height: 100%;
+		}
+		/*sidebar-menu*/
+		ul.sidebar-menu {
+    		margin-top: 75px;
+		}
+		ul.sidebar-menu, ul.sidebar-menu li ul.sub {
+		    margin: -2px 0 0;
+		    padding: 0;
+		}
+
+		ul.sidebar-menu li {
+    /* line-height: 20px !important; */
+		    margin-bottom: 5px;
+		    margin-left: 10px;
+		    margin-right: 10px;
+		}
+		#sidebar {
+    width: 210px;
+    height: 100%;
+    position: fixed;
+    background: #2a3542;
+		}
+
+		#sidebar ul li {
+		    position: relative;
+		}
+
+		#sidebar .sub-menu > .sub li  {
+		    padding-left: 32px;
+		}
+
+		#sidebar .sub-menu > .sub li:last-child {
+		    padding-bottom: 10px;
+		}
+		.nav-collapse.collapse {
+    		display: inline;
+		}
+
+		ul.sidebar-menu , ul.sidebar-menu li ul.sub{
+		    margin: -2px 0 0;
+		    padding: 0;
+		}
+
+		ul.sidebar-menu {
+		    margin-top: 75px;
+		}
+
+		#sidebar > ul > li > ul.sub {
+		    display: none;
+		}
+
+		#sidebar > ul > li.active > ul.sub, #sidebar > ul > li > ul.sub > li > a {
+		    display: block;
+		}
+
+		ul.sidebar-menu li ul.sub li{
+		    background: #35404D;
+		    margin-bottom: 0;
+		    margin-left: 0;
+		    margin-right: 0;
+		}
+
+		ul.sidebar-menu li ul.sub li:last-child{
+		    border-radius: 0 0 4px 4px;
+		    -webkit-border-radius: 0 0 4px 4px;
+		}
+
+		ul.sidebar-menu li ul.sub li a {
+		    font-size: 12px;
+		    padding: 6px 0;
+		    line-height: 35px;
+		    height: 35px;
+		    -webkit-transition: all 0.3s ease;
+		    -moz-transition: all 0.3s ease;
+		    -o-transition: all 0.3s ease;
+		    -ms-transition: all 0.3s ease;
+		    transition: all 0.3s ease;
+		    color: #aeb2b7;
+		}
+
+		ul.sidebar-menu li ul.sub li a:hover, ul.sidebar-menu li ul.sub li.active a {
+		    color: #FF6C60;
+		    -webkit-transition: all 0.3s ease;
+		    -moz-transition: all 0.3s ease;
+		    -o-transition: all 0.3s ease;
+		    -ms-transition: all 0.3s ease;
+		    transition: all 0.3s ease;
+		    display: block;
+		}
+
+		ul.sidebar-menu li{
+		    /*line-height: 20px !important;*/
+		    margin-bottom: 5px;
+		    margin-left:10px;
+		    margin-right:10px;
+		}
+
+		ul.sidebar-menu li.sub-menu{
+		    line-height: 15px;
+		}
+
+		ul.sidebar-menu li a span{
+		    display: inline-block;
+		}
+
+		ul.sidebar-menu li a{
+		    color: #aeb2b7;
+		    text-decoration: none;
+		    display: block;
+		    padding: 15px 0 15px 10px;
+		    font-size: 12px;
+		    outline: none;
+		    -webkit-transition: all 0.3s ease;
+		    -moz-transition: all 0.3s ease;
+		    -o-transition: all 0.3s ease;
+		    -ms-transition: all 0.3s ease;
+		    transition: all 0.3s ease;
+		}
+
+		ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+		    background: #35404d;
+		    color: #fff;
+		    display: block;
+		    border-radius: 4px;
+		    -webkit-border-radius: 4px;
+
+		    -webkit-transition: all 0.3s ease;
+		    -moz-transition: all 0.3s ease;
+		    -o-transition: all 0.3s ease;
+		    -ms-transition: all 0.3s ease;
+		    transition: all 0.3s ease;
+		}
+
+
+		ul.sidebar-menu li a i {
+		    font-size: 15px;
+		    padding-right: 6px;
+		}
+
+		ul.sidebar-menu li a:hover i, ul.sidebar-menu li a:focus i {
+		    color: #FF6C60;
+		}
+
+		ul.sidebar-menu li a.active i {
+		    color: #FF6C60;
+		}
+/*sidebar-toggle-box*/
+		.sidebar-toggle-box {
+		    float: left;
+		    padding-right: 15px;
+		    margin-top: 20px;
+		}
+		.sidebar-toggle-box .fa-bars {
+		    cursor: pointer;
+		    display: inline-block;
+		    font-size: 20px;
+		}
+		.sidebar-closed > #sidebar > ul {
+		    display: none;
+		}
+		.sidebar-closed #main-content {
+		    margin-left: 0px;
+		}
+		.sidebar-closed #sidebar {
+		    margin-left: -210px;
+		}
+		/*LEFT NAVIGATION ICON*/
+		.dcjq-icon {
+		    height:17px;
+		    width:17px;
+		    display:inline-block;
+		    background: url(../img/nav-expand.png) no-repeat top;
+		    border-radius:3px;
+		    -moz-border-radius:3px;
+		    -webkit-border-radius:3px;
+		    position:absolute;
+		    right:10px;
+		    top:15px;
+		}
+		.active .dcjq-icon {
+		    background: url(../img/nav-expand.png) no-repeat bottom;
+		    border-radius:3px;
+		    -moz-border-radius:3px;
+		    -webkit-border-radius:3px;
+		}
+		/*---*/
+		.nav-collapse.collapse {
+    		display: inline;
+		}
 	</style>
 </head>
 <body>
 <div class="container">
-
-	<div class="page-header text-center">
-		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
-		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
-	</div>
-
-	<div class="row">
-
-		<!-- LOCAL INFORMATION -->
-		<div class="col-sm-6">
-			<div class="well">
-				<h3><span class="fa fa-user"></span> Local</h3>
-
-
-			</div>
+	<!-- header start -->
+	<header class="header white-bg">
+		<div class="sidebar-toggle-box">
+			<div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
 		</div>
-
-	</div>
-
+		<a href="." class="logo">
+			<img src="https://cdn2.tgdd.vn/Products/Images/1784/60331/Tu-Dien-Anh-Viet-Vlook-icon.png" width="30px" alt="Smart Dictionary">
+		</a>
+		<div class="nav notify-row" id="top_menu"></div>
+		<div class="top-nav">
+			<ul class="nav pull-right top-menu">
+				<li>
+					<input type="text" class="form-control search" placeholder="Search">
+				</li>
+				<li class="dropdown">
+					<a data-toggle="dropdown" class="dropdown-toggle" aria-expanded="false" href="#">
+						<img src="http://web.hcmus.edu.vn/images/stories/logo-khtn.png" width="20px">
+						<span class="username"></span>
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu extended logout">
+						<li style="width:50%; background-color:#a9c;" >
+							<a href=".">
+								<i class="fa fa-suitcase" style="color:#fff"></i>
+								<span style="color:#fff">Trang chủ</span>
+							</a>
+						</li>
+						<li style="width:50%; border-radius:0;">
+							<a href="#">
+								<i class="fa fa-key">Log Out</i>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</header>
+	<aside class="">
+		<div class="nav-collapse" id="sidebar" tabindex="5000" style="overflow:hidden; outline: none;">
+			<ul class="sidebar-menu" id="nav-accordion">
+				<li>
+					<a href="#" class="active">
+						<i class="fa fa-dashboard">
+							<span>Phạm Hoàng Tuấn</span>
+						</i>
+					</a>
+				</li>
+				<li></li>
+			</ul>
+		</div>
+	</aside>
+	<session id="main-content">
+			<div class="wrapper">
+				<session class="content">
+						<div class="panel panel-default">
+								<div class="panel-heading">
+										<b>Thông tin cá nhân</b>
+								</div>
+								<div class="panel-body">
+										<form class="form-horizontal" role="from">
+												<div class="form-group">
+														<label class="col-md-3 control-label" for="basic-url">
+															<img src="http://web.hcmus.edu.vn/images/stories/logo-khtn.png" lass="img-thumbnail choose_pic imgIcon" id="imgIcon" width="100%"></img>
+														</label>
+														<div class="col-md-8">
+															<div class="row" style="margin-top:20px">
+																	<div class="col-md-9">
+																		<div class="input-group">
+																			<span class="input-group-addon" id="basic-last_name">Họ tên (*) :</span>
+																			<input style="width:100%" class="form-control" type="text" id="full_name" name="full_name" placeholder="Nhập họ tên" value="Phạm Hoàng Tuấn"></input>
+																		</div>
+																	</div>
+															</div>
+															<div class="row">
+																<div class="col-md-9" style="margin-top:15px">
+																	<div class="input-group">
+																		<span class="input-group-addon" id="basic-sex">Avatar (*) :</span>
+																		<input type="file" name="avatar" value="http://web.hcmus.edu.vn/images/stories/logo-khtn.png" style="margin:5px 20px"></input>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-9" style="margin-top:15px">
+																	<div class="input-group">
+																		<span class="input-group-addon" id="basic-sex">Giới tính :</span>
+																		<span stype="float:left">
+																			<input style="margin:10px" type="radio" name="gender" value="nam"> Nam</input>
+																			<input style="margin:10px" type="radio" name="gender" value="nu"> Nữ</input>
+																			<input style="margin:10px" type="radio" name="gender" value="other"> Khác</input>
+																		</span>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-9" style="margin-top:15px">
+																	<div class="input-group">
+																		<span class="input-group-addon" id="basic-sex">Ngày sinh :</span>
+																		<input type="date" class="form-control date hasDatepicker" id="birthday" name="birthday" value=""></input>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-9" style="margin-top:15px">
+																	<div class="input-group">
+																		<span class="input-group-addon" id="basic-sex">Điện thoại :</span>
+																		<input type="text" class="form-control" minlength="9" maxlength="30" id="phone" name="phone" value="0974479487"></input>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-md-9" style="margin-top:15px">
+																	<div class="input-group">
+																		<span class="input-group-addon" id="basic-sex">Địa chỉ :</span>
+																		<input type="text" class="form-control" id="address" name="address" value="34/2 Nguyễn Duy"></input>
+																	</div>
+																</div>
+															</div>
+														</div>
+												</div>
+												<div class="form-group">
+													<div class="col-md-6 col-md-offset-3">
+														<button class="btn btn-primary" type="submit" style="float:right">Lưu</button>
+													</div>
+												</div>
+										</form>
+								</div>
+						</div>
+				</session>
+			</div>
+	</session>
+	<footer class="site-footer">
+		<div class="text-center">
+      Copyright 2017 © by My Group
+			<a href class="go-top">
+				<i class="fa fa-angle-up"></i>
+			</a>
+		</div>
+	</footer>
 </div>
 </body>
 </html>

@@ -24,7 +24,8 @@ module.exports = function(passport) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         connection.query("SELECT * FROM account WHERE id = ? ",[id], function(err, rows){
-            done(err, rows[0]);
+            console.log("Dsds");
+            done(err, rows);
         });
     });
 
@@ -62,12 +63,13 @@ module.exports = function(passport) {
                         username: username,
                         password: bcrypt.hashSync(password, null, null), // use the generateHash function in our user model
                         phone: phone,
-                        address: address
+                        address: address,
+                        id_social: null
                     };
 
-                    var insertQuery = "INSERT INTO account ( fullname, username, password, phone, address) values (?,?,?,?,?)";
+                    var insertQuery = "INSERT INTO account ( fullname, username, password, phone, address, id_social) values (?,?,?,?,?,?)";
 
-                    connection.query(insertQuery,[newUserMysql.fullname, newUserMysql.username, newUserMysql.password, newUserMysql.phone, newUserMysql.address],function(err, rows) {
+                    connection.query(insertQuery,[newUserMysql.fullname, newUserMysql.username, newUserMysql.password, newUserMysql.phone, newUserMysql.address, newUserMysql.id_social],function(err, rows) {
                         newUserMysql.id = rows.insertId;
                         return done(null, newUserMysql);
                     });
@@ -118,27 +120,32 @@ module.exports = function(passport) {
       //asynchronous
       process.nextTick(function() {
         //find the user in the database based on their facebook id
-        connection.query("SELECT * FROM social_account WHERE id = ?", [profile.id], function(err, rows){
+        connection.query("SELECT * FROM account WHERE id_social = ?", [profile.id], function(err, rows){
             //if there is an error, stop everthing and return that
             //ie an error connecting to the database
-            if(err)
+            if(err){
+                console.log("hhshshs");
                 return done(err);
+              }
             if(rows.length){
-                return done(null, rows[0]);//user found, return that user
+                console.log("hhshshs");
+                return done(null, rows);//user found, return that user
             }
             else{ //if there is no user found with that facebook id, create them
                 var newUser = {
                     id: profile.id,
-                    token: token,
                     email: profile.emails[0].value,
                     name: profile.name.givenName + ' ' + profile.name.familyName
                 };
 
-                var insertQuery = "INSERT INTO social_account (id, token, email, name) values (?,?,?,?)";
-                connection.query(insertQuery,[newUser.id, newUser.token, newUser.email, newUser.name],function(err) {
-                    if(err)
+                var insertQuery = "INSERT INTO account (fullname, username, password, phone, address, id_social) values (?,?,?,?,?,?)";
+                connection.query(insertQuery,[newUser.name, newUser.email, null, null, null, newUser.id],function(err, rows) {
+                    if(err){
+                        console.log("hhshshs");
                         throw err;
+                    }
                     //if successful, return new user
+                    newUser.id = rows.insertId;
                     return done(null, newUser);
                 });
             }

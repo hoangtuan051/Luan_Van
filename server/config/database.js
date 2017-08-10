@@ -6,5 +6,5 @@ module.exports = {
         'password': ''
     },
 	'database': 'dictionaryclc',
-    'users_table': 'account'
+  'users_table': 'account'
 };

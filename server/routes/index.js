@@ -30,7 +30,7 @@ var users;
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
-  res.render('mainpage');
+  res.render('sentences');
 });
 
 router.get('/sentences', function(req, res, next) {
@@ -334,9 +334,7 @@ router.post('/register', passport.authenticate('local-signup', {
 
 // route for facebook authentication and login
 // different scopes while logging in
-router.get('/auth/facebook',
-  passport.authenticate('facebook', { scope : 'email' })
-);
+router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
 // handle the callback after facebook has authenticated the user
 router.get('/auth/facebook/callback',
@@ -371,6 +369,7 @@ router.get('/auth/twitter/callback',
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
 router.get('/profile', isLoggedIn, function(req, res) {
+  console.log("dsdsssss");
   res.render('profile', {
     user : req.user // get the user out of session and pass to template
   });
