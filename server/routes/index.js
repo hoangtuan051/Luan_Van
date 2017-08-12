@@ -3,6 +3,7 @@ var fs = require('fs');
 var router = express.Router();
 var path = require('path');
 var mysql = require('mysql');
+var bcrypt = require('bcrypt-nodejs');
 var passport = require('passport');
 var checkWord = require('check-word'),
   words       = checkWord('en');
@@ -26,11 +27,16 @@ var pool = mysql.createPool({
 var outputFile = '5.tagged.xml';
 var outputFileav = 'output.xml';
 var checked = true;
-var users;
+var users="";
 /* GET home page. */
 
 router.get('/', function(req, res, next) {
-  res.render('sentences');
+  if(req.isAuthenticated()){
+    res.render('mainpage', {users: users});
+  }
+  else{
+    res.render('mainpage');
+  }
 });
 
 router.get('/sentences', function(req, res, next) {
@@ -229,9 +235,7 @@ router.get('/searchav', function(req, res, next){
             json = JSON.parse(json);
             console.log(json.pos.sentence.word);
             res.render('sentences', {data:json.pos.sentence.word, checkEn: checked});
-              //res.json({Search: req.query.search})
             console.log('Done');
-            //res.redirect('/top?search=' + req.body.searchword);
         });
       });
     });
@@ -278,14 +282,50 @@ router.get('/searchav', function(req, res, next){
   }
 });
 
+router.get('/profiles', function(req, res){
+  if(req.isAuthenticated()){
+    res.render('profiles', {users: users});
+  }
+});
+
+router.post('/updatepass', function(req, res){
+  if(req.isAuthenticated){
+    pool.getConnection(function(err, connection){
+        connection.query('SELECT * FROM account where id = ' + users.id, function(err, results, fields){
+          var oldpassword = req.body.oldpassword;
+          var newpassword = req.body.newpassword;
+          if(!bcrypt.compareSync(oldpassword, results[0].password)){
+              res.render('changepassword', {errors: "Please verify your current password.", users: users});
+              return;
+          }
+          newpassword = bcrypt.hashSync(newpassword, null, null);
+          connection.query('UPDATE account SET password="' + newpassword + '"' + ' WHERE id=' + results[0].id, function(err){
+              if(err){
+                  console.log(err);
+              }
+              res.render('changepassword', {users: users});
+              return;
+          });
+        });
+        connection.release();
+    });
+  }
+});
+
+router.get('/changepassword', function(req, res){
+  if(req.isAuthenticated()){
+    res.render('changepassword', {users: users});
+  }
+});
+
 router.get('/login', function(req, res) {
   // render the page and pass in any flash data if it exists
-  res.render('login', { message: req.flash('loginMessage') });
+  res.render('login', { message: req.flash('loginMessage')});
 });
 
 router.get('/success', function(req, res){
   if(req.isAuthenticated()){
-    res.render('success', {info: users});
+    res.render('success', {users: users});
   }
   else{
     res.send("chua login");
@@ -303,7 +343,7 @@ router.post('/login', function(req, res, next) {
       if (err) {
         return next(err);
       }
-      users = user.fullname;
+      users = user;
       //console.log("fullname " + user.fullname);
       return res.redirect('/success');
     });
@@ -368,10 +408,20 @@ router.get('/auth/twitter/callback',
 // =====================================
 // we will want this protected so you have to be logged in to visit
 // we will use route middleware to verify this (the isLoggedIn function)
+// Get google API
+router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+    // the callback after google has authenticated the user
+router.get('/auth/google/callback',
+  passport.authenticate('google', {
+    successRedirect : '/profile',
+    failureRedirect : '/'
+  })
+);
+
 router.get('/profile', isLoggedIn, function(req, res) {
-  console.log("dsdsssss");
-  res.render('profile', {
-    user : req.user // get the user out of session and pass to template
+  res.render('mainpage', {
+    users : req.user // get the user out of session and pass to template
   });
 });
 

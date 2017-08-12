@@ -29,11 +29,14 @@ html
         // LOGIN FORM
         form#registers(action='/register', method='post', name='register')
           .form-group
+            label Username (*)
+            input.form-control(type='text', name='username', placeholder='Enter your username',  minlength="2", required)
+          .form-group
             label Fullname (*)
             input.form-control(type='text', name='fullname', placeholder='Enter your fullname',  minlength="2", required)
           .form-group
             label Email (*)
-            input.form-control(type='email', name='username', placeholder='abc@gmail.com', required)
+            input.form-control(type='email', name='email', placeholder='abc@gmail.com', required)
           .form-group
             label Password (*)
             input.form-control#password(type='password', name='password', placeholder='Enter a password', minlength="6", required)
@@ -56,7 +59,11 @@ html
                       required: true,
                       minlength: 2
                     },
-                    username: {
+                    username:{
+                      required: true,
+                      minlength: 2
+                    },
+                    email: {
                       required: true,
                       email: true
                     },
@@ -97,5 +104,5 @@ html
           a(href='/login') Login
         p
           | Or go 
-          a(href='/') H ome
+          a(href='/') Home
           | .

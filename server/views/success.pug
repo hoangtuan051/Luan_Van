@@ -52,11 +52,11 @@ html(lang='en')
         #myNavbar.collapse.navbar-collapse
           ul.nav.navbar-nav
             li
-              a.english(href='mainpage.html') Home
-              a.vietnam(href='mainpage.html') Trang Chủ
+              a.english(href='/') Home
+              a.vietnam(href='/') Trang Chủ
             li.active
-              a.english(href='#') Sentence Parsing
-              a.vietnam(href='#') Dịch câu
+              a.english(href='/sentences') Sentence Parsing
+              a.vietnam(href='/sentences') Dịch câu
             li
               a.english(href='#') Word Lists & Quiz
               a.vietnam(href='#') List từ & Quiz
@@ -77,11 +77,11 @@ html(lang='en')
             li
               .dropdown
                 button#lang.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', style='outline: none;border: none;background-color: black;margin: 7px;')
-                  | #{info}
+                  | #{users.fullname}
                   span.caret
                 ul.dropdown-menu
                   li
-                    a(href='#') Profile
+                    a(href='/profiles') Profile
                   li
                     a(href='/logout') Logout
               //a(href="/logout")

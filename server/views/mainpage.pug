@@ -103,7 +103,16 @@ html(lang='en')
                 $('#search-form').attr('action', '/searchvie');
               }
           });    
-
+          
+          var user = !{JSON.stringify(users)};
+          console.log((user));
+          if(user != null){
+              $('#authenticated').attr('style', 'display: block');
+              $('#user').html(user.fullname + '<span class="caret"></span');
+              $('#eng').remove();
+              $('#vn').remove();
+          }
+          
       });
     style.
       /* Remove the navbar's default margin-bottom and rounded borders */
@@ -160,19 +169,29 @@ html(lang='en')
             li
               .dropdown
                 button#lang.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', style='outline: none;border: none;background-color: black;margin: 7px;')
-                  | Language
+                  | 
                   span.caret
                 ul.dropdown-menu
                   li
                     a(onclick='ToEnglish();') English
                   li
                     a(onclick='ToVietNam();') Việt Nam
+            li#authenticated(style='display: none')
+              .dropdown
+                button#user.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', style='outline: none;border: none;background-color: black;margin: 7px;')
+                  | 
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href='/profiles') Profile
+                  li
+                    a(href='/logout') Logout
             li
-              a.english(href='/login', data-toggle='modal', data-target='#login_signup')
+              a.english#eng(href='/login')
                 span.glyphicon.glyphicon-log-in
                 |  Login
             li
-              a.vietnam(href='/login', data-toggle='modal', data-target='#login_signup')
+              a.vietnam#vn(href='/login')
                 span.glyphicon.glyphicon-log-in
                 |  Đăng nhập
     .container-fluid.text-center
@@ -193,24 +212,7 @@ html(lang='en')
             input(type='hidden', name='myParameterName', value='myParameterValue')
             input(type='submit', style='display: none')
           p#res
-      //- script(type='text/javascript').
-      //-     (function(){
-      //-         if($('.typeahead').find('option:selected').text() === "English"){
-      //-                 $('input.typeahead').typeahead({
-      //-                     name: 'typeahead',
-      //-                     remote: 'http://localhost:3000/search?key=%QUERY',
-      //-                     limit: 10
-      //-                 });
-      //-             }
-      //-         else{
-      //-           alert("ddddd");
-      //-             $('input.typeahead').typeahead({
-      //-                 name: 'typeahead',
-      //-                 remote: 'http://localhost:3000/suggest?key=%QUERY',
-      //-                 limit: 10
-      //-             });
-      //-         }            
-      //-     })();
+  
       .container-fluid(style='background-color: #EEF1F6;margin-bottom: 100px;')
         label.english(style='font-size: 20px;float: left;') Explore our features
         label.vietnam(style='font-size: 20px;float: left;') Các tính năng
