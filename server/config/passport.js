@@ -125,7 +125,7 @@ module.exports = function(passport) {
     //facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
       //asynchronous
-      console.log(profile);
+      //console.log(profile);
       process.nextTick(function() {
         //find the user in the database based on their facebook id
         connection.query("SELECT * FROM account WHERE username = ?", [profile.id], function(err, rows){
@@ -136,7 +136,7 @@ module.exports = function(passport) {
                 return done(err);
               }
             if(rows.length){
-                console.log("Resy " + rows[0].username);
+                //console.log("Resy " + rows[0].username);
                 return done(null, rows[0]);//user found, return that user
             }
             else{ //if there is no user found with that facebook id, create them
@@ -168,7 +168,7 @@ module.exports = function(passport) {
       profileFields   : ['id', 'emails', 'displayName']
     },
     function(token, refreshToken, profile, done) {
-      console.log(profile);
+    //  console.log(profile);
       // make the code asynchronous
       // User.findOne won't fire until we have all our data back from Google
       process.nextTick(function() {
@@ -207,46 +207,46 @@ module.exports = function(passport) {
 
   }));
 
-      passport.use('twitter', new TwitterStrategy({
-        consumerKey     : configAuth.twitterAuth.consumerKey,
-        consumerSecret  : configAuth.twitterAuth.consumerSecret,
-        callbackURL     : configAuth.twitterAuth.callbackURL
-      },
-      function(token, tokenSecret, profile, done) {
-        console.log(profile);
-      // make the code asynchronous
-      // User.findOne won't fire until we have all our data back from Twitter
-        process.nextTick(function() {
-          connection.query("SELECT * FROM account WHERE username = ?", [profile.id], function(err, rows) {
-            // if there is an error, stop everything and return that
-            // ie an error connecting to the database
-              if (err)
-                return done(err);
+  passport.use('twitter', new TwitterStrategy({
+    consumerKey     : configAuth.twitterAuth.consumerKey,
+    consumerSecret  : configAuth.twitterAuth.consumerSecret,
+    callbackURL     : configAuth.twitterAuth.callbackURL
+  },
+  function(token, tokenSecret, profile, done) {
+    //console.log(profile);
+  // make the code asynchronous
+  // User.findOne won't fire until we have all our data back from Twitter
+    process.nextTick(function() {
+      connection.query("SELECT * FROM account WHERE username = ?", [profile.id], function(err, rows) {
+        // if there is an error, stop everything and return that
+        // ie an error connecting to the database
+          if (err)
+            return done(err);
 
-              // if the user is found then log them in
-              if (rows.length) {
-                return done(null, rows[0]); // user found, return that user
-              } else {
-                 // if there is no user, create them
-                 // set all of the user data that we need
-                 var newUser = {
-                     username : profile.id,
-                     displayName : profile.displayName,
-                     lastStatus : profile._json.status.text,
-                 };
+          // if the user is found then log them in
+          if (rows.length) {
+            return done(null, rows[0]); // user found, return that user
+          } else {
+             // if there is no user, create them
+             // set all of the user data that we need
+             var newUser = {
+                 username : profile.id,
+                 displayName : profile.displayName,
+                 lastStatus : profile._json.status.text,
+             };
 
-                 var insertQuery = "INSERT INTO account (username, fullname, email, password, phone, address, id_social) values (?,?,?,?,?,?)";
-                 connection.query(insertQuery,[newUser.username, newUser.displayName, null, null, null, null, newUser.id_social],function(err, rows) {
-                     if(err){
-                         console.log("error2");
-                         throw err;
-                     }
-                     //if successful, return new user
-                     newUser.id = rows.insertId;
-                     return done(null, newUser);
-                 });
-              }
-           });
-        });
-      }));
+             var insertQuery = "INSERT INTO account (username, fullname, email, password, phone, address, id_social) values (?,?,?,?,?,?)";
+             connection.query(insertQuery,[newUser.username, newUser.displayName, null, null, null, null, newUser.id_social],function(err, rows) {
+                 if(err){
+                     console.log("error2");
+                     throw err;
+                 }
+                 //if successful, return new user
+                 newUser.id = rows.insertId;
+                 return done(null, newUser);
+             });
+          }
+       });
+    });
+  }));
 };
