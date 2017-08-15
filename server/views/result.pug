@@ -19,22 +19,56 @@ html(lang='en')
     script(src='js/sentence_parse.js')
     script(type='text/javascript').
       $(document).ready(function(){
-          $('input.typeahead').typeahead({
-              name: 'typeahead',
+          $('.typeahead').typeahead({
+              name: 'vocc',
               remote: 'http://localhost:3000/search?key=%QUERY',
-              limit: 10
+              limit: 10,
+              highlight: true
+          });
+              
+          $('.searchoption').change(function(){
+              var optionSelected = $(this).find("option:selected");
+              var textSelected = optionSelected.text();
+              if(textSelected === "English"){
+                  alert("anh");
+                  $('.typeahead').typeahead('destroy');
+                  $('.typeahead').typeahead({
+                      name: 'vocc',
+                      remote: 'http://localhost:3000/search?key=%QUERY',
+                      limit: 10,
+                      highlight: true
+                  });
+              }
+            else {
+              alert("viet");
+              $('.typeahead').typeahead('destroy');
+              $('.typeahead').typeahead({
+                  name: 'voc',
+                  remote: 'http://localhost:3000/suggest?key=%QUERY',
+                  limit: 10,
+                  highlight: true
+              });
+            }
           });
           
           $('.searchbox').change(function(){              
               if($('.searchoption').find('option:selected').text() === "English"){
-                  alert("sdsds");
-                  $('#search-form').attr('action', '/searcheng/' + $('.searchbox').val());
+                  console.log("sdsds");
+                  $('#search-form').attr('action', '/searcheng');
               }
               else{
-                  alert("khac");
-                  $('#search-form').attr('action', '/searchvie/'+ $('.searchbox').val());
+                  console.log("khac");
+                  $('#search-form').attr('action', '/searchvie');
               }
           });
+          
+          var user = !{JSON.stringify(users)};
+          if(user != null){
+              $('#authenticated').attr('style', 'display: block');
+              $('#user').html(user.fullname + '<span class="caret"></span');
+              $('#eng').remove();
+              $('#vn').remove();
+          }
       });
     style.
       /* Remove the navbar's default margin-bottom and rounded borders */
@@ -125,12 +159,30 @@ html(lang='en')
                     a(onclick='ToEnglish();') English
                   li
                     a(onclick='ToVietNam();') Việt Nam
+            li#authenticated(style='display: none')
+              .dropdown
+                button#user.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true', style='outline: none;border: none;background-color: #054767;margin: 7px;')
+                  | 
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href='/profiles')
+                      i.fa.fa-folder-open(aria-hidden="true") 
+                      |  My List                                
+                  li
+                    a(href='/profiles') 
+                      i.fa.fa-user-circle(aria-hidden="true")
+                      |  Profile
+                  li
+                    a(href='/logout') 
+                      i.fa.fa-circle-o-notch(aria-hidden="true")
+                      |  Logout
             li
-              a.english(href='/login')
+              a.english#eng(href='/login')
                 span.glyphicon.glyphicon-log-in
                 |  Login
             li
-              a.vietnam(href='/login')
+              a.vietnam#vn(href='/login')
                 span.glyphicon.glyphicon-log-in
                 |  Đăng nhập
     .container-fluid.text-center(style='margin-top: 40px;')
@@ -140,11 +192,11 @@ html(lang='en')
           .searchframe(style='border-color: gray;border-style: solid;border-radius: 5px;border-width:2px;')
             form#search-form(action='/searcheng', method='get')
               div
-                input#sentence_parse.searchbox.typeahead.tt-query(type='text', name='typeahead', autofocus='yes', placeholder='Enter sentence', autocomplete='off')
-                span.search_select
-                  button.search_button(type='button')
+                input#sentence_parse.searchbox.typeahead(type='text', name='typeahead', autofocus='yes', placeholder='Enter sentence', autocomplete='off')
+                span.searchselect
+                  button.searchbutton(type='submit', value='submit')
                     i.fa.fa-search(aria-hidden='true')
-                  select.search_option
+                  select.searchoption
                     option(value='English', selected='selected') English
                     option(value='Vietnam') Viet Nam
       .meanings

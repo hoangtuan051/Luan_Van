@@ -57,7 +57,7 @@ router.get('/searcheng', function(req, res, next){
       }
 
       if(results.length > 0)
-          res.render('result', {datadic: results});
+          res.render('result', {datadic: results, users: users});
       else
           res.render('noresult');
   });
@@ -350,6 +350,15 @@ router.post('/login', function(req, res, next) {
   })(req, res, next)
 });
 
+// router.get('/wordlists', function(req, res, next){
+//     pool.getConnection(function(err, connection){
+//       connection.query('SELECT * FROM where id=' + , function(err, results, fields){
+//
+//       });
+//       connection.release();
+//     });
+// });
+
 // process the login form
 // router.post('/login', passport.authenticate('local-login', {
 //         successRedirect : '/success', // redirect to the secure profile section
@@ -420,6 +429,7 @@ router.get('/auth/google/callback',
 );
 
 router.get('/profile', isLoggedIn, function(req, res) {
+  users = req.user;
   res.render('mainpage', {
     users : req.user // get the user out of session and pass to template
   });

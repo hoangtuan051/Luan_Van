@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Profile</title>
+    <link rel="stylesheet" ,="" type="text/css" href="css/profile.css">
+    <link href="css/blue.css" rel="stylesheet" type="text/css">
+    <link href="css/graphite.css" rel="stylesheet" type="text/css">
+    <link href="css/grey.css" rel="stylesheet" type="text/css">
+    <link href="css/profile-responsive.css" rel="stylesheet" type="text/css">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/jquery.hoverIntent.minified.js"></script>
+    <script type="text/javascript" src="js/jquery.dcjqaccordion.2.7.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+          //sidebar push
+          $('#drop').click(function(){
+              var display = $('#nav-accordion').css("display");
+              if(display != "none"){
+                  $('#container').addClass('sidebar-closed');
+                  $('#nav-accordion').attr("style", "display: none");
+              }
+              else{
+                  $('#container').removeClass('sidebar-closed');
+                  $('#nav-accordion').attr("style", "display: block");
+              }
+          });
+
+            //animation dropdown
+          $('.dcjq-parent-li').click(function(){
+              var display =  $('.sub').css("display");
+              if(display!="none"){
+                  $(".sub").attr("style", "display:none");
+                  $('.dcjq-parent-li a.active').removeClass("active");
+              }
+              else {
+                  $(".sub").attr("style", "display:block");
+                  $('.dcjq-parent-li a').addClass("active");
+              }
+          });
+
+          $(function () {
+          var data = ;
+            $('#full_name').val(data.fullname);
+            if(data.email != null)
+                $('#email').val(data.email);
+            if(data.phone != null)
+                $('#phone').val(data.phone);
+            if(data.address != null)
+                $('#address').val(data.address);
+          });
+
+          $('ul.sidebar-menu li a').click(function(){
+              $('ul.sidebar-menu li a').removeClass("active");
+              $(this).addClass("active");
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <section id="container">
+      <!-- header start-->
+      <header class="header white-bg">
+        <div class="sidebar-toggle-box">
+          <div class="fa fa-bars tooltips" id="drop" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div><a class="logo" href="."><img src="https://cdn2.tgdd.vn/Products/Images/1784/60331/Tu-Dien-Anh-Viet-Vlook-icon.png" width="30px" alt="Smart Dictionary"></a>
+        <div class="nav notify-row" id="top_menu"></div>
+        <div class="top-nav">
+          <ul class="nav pull-right top-menu">
+            <li>
+              <input class="form-control search" type="text" placeholder="Search">
+            </li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#"><img src="http://web.hcmus.edu.vn/images/stories/logo-khtn.png" width="20px"><span class="username"></span><b class="caret"></b></a>
+              <ul class="dropdown-menu extended logout">
+                <li style="width:50%; background-color:#a9c"><a href="."><i class="fa fa-suitcase" style="color:#fff"></i><span style="color:#fff">Trang chủ</span></a></li>
+                <li style="width:50%; border-radius:0"><a href="/logout"><i class="fa fa-key">Log Out</i></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </header>
+      <aside>
+        <div class="nav-collapse" id="sidebar" tabindex="5000" style="overflow:hidden; outline: none">
+          <ul class="sidebar-menu" id="nav-accordion" style="display: block">
+            <li><a class="active" href="/profiles"><i class="fa fa-dashboard"></i>span <%-users.fullname%></a></li>
+            <li class="sub-menu dcjq-parent-li"><a class="dcjq-parent" href="javascript:;"><i class="fa fa-user"></i><span>Thông tin</span><span class="dcjq-icon"></span></a>
+              <ul class="sub" style="display:none">
+                <li><a href="/profiles">Trang cá nhân</a></li>
+                <li><a href="/changepassword">Đổi mật khẩu</a></li>
+              </ul>
+            </li>
+            <li class="sub-menu"><a><i class="fa fa-envelope"></i><span>Liên hệ</span></a></li>
+            <li class="sub-menu" style="margin-left:20px"><a><i class="fa fa-envelope-o"></i>Email<span>13clc@student.hcmus.edu.vn</span></a></li>
+            <li class="sub-menu" style="margin-left:20px"><a><i class="fa fa-phone"></i><span>Điện thoại: 0974479487</span></a></li>
+          </ul>
+        </div>
+      </aside>
+      <session id="main-content">
+        <div class="wrapper">
+          <session class="content">
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Thông tin cá nhân</b></div>
+              <div class="panel-body">
+                <form class="form-horizontal" role="from">
+                  <div class="form-group">
+                    <label class="col-md-3 control-label" for="basic-url"><img id="imgIcon" src="http://web.hcmus.edu.vn/images/stories/logo-khtn.png" lass="img-thumbnail choose_pic imgIcon" width="100%"></label>
+                    <div class="col-md-8">
+                      <div class="row" style="margin-top:20px">
+                        <div class="col-md-9">
+                          <div class="input-group"><span class="input-group-addon" id="basic-last_name">Họ tên (*)</span>
+                            <input class="form-control" id="full_name" style="width:100%" type="text" name="full_name" placeholder="Nhập họ tên" value="">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-9" style="margin-top:15px">
+                          <div class="input-group"><span class="input-group-addon" id="basic-sex">Avatar (*)</span>
+                            <input type="file" name="avatar" value="http://web.hcmus.edu.vn/images/stories/logo-khtn.png" style="margin:5px 20px">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-9" style="margin-top:15px">
+                          <div class="input-group"><span class="input-group-addon" id="basic-sex">Giới tính</span><span stype="float:left">
+                              <input style="margin:10px" type="radio" name="gender" value="nam"> Nam
+                              <input style="margin:10px" type="radio" name="gender" value="nu"> Nữ
+                              <input style="margin:10px" type="radio" name="gender" value="other"> Khác</span></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-9" style="margin-top:15px">
+                          <div class="input-group"><span class="input-group-addon" id="basic-sex">Email</span>
+                            <input class="form-control" id="email" type="email" name="email" value="">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-9" style="margin-top:15px">
+                          <div class="input-group"><span class="input-group-addon" id="basic-sex">Điện thoại</span>
+                            <input class="form-control" id="phone" type="text" minlength="9" maxlength="30" name="phone" value="0974479487">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-9" style="margin-top:15px">
+                          <div class="input-group"><span class="input-group-addon" id="basic-sex">Địa chỉ</span>
+                            <input class="form-control" id="address" type="text" name="address" value="34/2 Nguyễn Duy">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-6 col-md-offset-3">
+                      <button class="btn btn-primary" type="submit" style="float:right">Save</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </session>
+        </div>
+      </session>
+      <footer class="site-footer">
+        <div class="text-center">Copyright 2017 © by My Group<a class="go-top" href=""><i class="fa fa-angle-up"></i></a></div>
+      </footer>
+    </section>
+  </body>
+</html>

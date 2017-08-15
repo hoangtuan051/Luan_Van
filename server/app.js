@@ -28,7 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src')));
 app.use(session({
-	secret: 'hoangtuannn'
+	secret: 'hoangtuannn',
+	resave: true,
+	saveUninitialized: true
  })); // session secret
 app.use(Passport.initialize());
 app.use(Passport.session());

@@ -1,5 +1,5 @@
 div#search{
-	background-color: #08363C;
+	background-color: #054767;
 	height: 120px;
 	position: relative;
 	top:-40px;
@@ -12,12 +12,12 @@ div#search .searchframe{
 	position: absolute;
 	top:25px;
 	left:40px;
-	right: 40px;
+	right:30px;
 	border-radius: 3px;
 }
 
 div#search .searchframe .searchbox{
-	border:none;
+	/*border: none;
 	outline: none;
 	border-right: 1px solid;
 	font-size: 20px;
@@ -26,11 +26,11 @@ div#search .searchframe .searchbox{
 	left: 10px;
 	top:10px;
 	bottom: 10px;
-	width: 70%;
+	width: 70%;*/
 }
 
-div#search .searchframe .typehead{
-	border:none;
+div#search .searchframe{
+	/*border:none;
 	outline: none;
 	border-right: 1px solid;
 	font-size: 20px;
@@ -39,7 +39,7 @@ div#search .searchframe .typehead{
 	left: 10px;
 	top:10px;
 	bottom: 10px;
-	width: 70%;
+	width: 70%;*/
 }
 
 .searchbutton {

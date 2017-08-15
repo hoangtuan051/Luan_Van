@@ -16,8 +16,7 @@ button.transparent {
 	border-radius: 3px;
 }
 
-.searchframe .searchbox,
-.searchframe .typehead{
+.searchframe .searchbox{
 	border:none;
 	outline: none;
 	border-right: 1px solid;
@@ -82,7 +81,7 @@ span.search_select{
 	.searchframe{
 		right: 200px;
 	}
-	.searchframe .searchbox .typehead{
+	.searchframe .searchbox{
 		width: 65%;
 	}
 	span.search_select{
@@ -95,8 +94,7 @@ span.search_select{
 	.searchframe{
 		right: 100px;
 	}
-	.searchframe .searchbox,
-  .searchframe .typehead{
+	.searchframe .searchbox{
 		width: 65%;
 	}
 	span.search_select{
@@ -115,7 +113,7 @@ span.search_select{
 	.searchframe{
 		right: 50px;
 	}
-	.searchframe .searchbox, .searchframe.typehead{
+	.searchframe .searchbox{
 		width: 65%;
 	}
 	span.search_select{
@@ -142,7 +140,7 @@ span.search_select{
 		right: 0px;
 		left: 0px;
 	}
-	.searchframe .searchbox, .searchframe.typehead{
+	.searchframe .searchbox{
 		width: 65%;
 	}
 	span.search_select{
