@@ -191,10 +191,11 @@
                       <div class="line l"></div><span>hoặc</span>
                       <div class="line r"></div>
                     </div>
-                    <div class="error"></div>
-                    <% if (message.length > 0) { %>
-                        <div class="alert alert-danger"><%= message %></div>
-                    <% } %>
+                    <div class="error">
+                      <% if (message.length > 0) { %>
+                          <div class="alert alert-danger"><%= message %></div>
+                      <% } %>
+                    </div>
                     <div class="form loginBox" style="display: block">
                       <form class="form-horizontal" role="form" method="POST" action="/login">
                         <div class="form-group">

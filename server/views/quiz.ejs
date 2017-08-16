@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Quiz</title>
     <!-- Quiz CSS -->
     <link href="css/quiz.css" rel="stylesheet">
@@ -56,14 +55,26 @@
     </div>
   </nav>
   <div class="wrapper">
-    <section class="left">
-      <div class="instruction">
-
-      </div>
-      <div class="choices">
-        
-      </div>
-    </section
+    <div id="quiz">
+        <div class="question">
+          <h2>Ngôn ngữ lập trình</h2>
+        </div>
+        <input type="radio" name="choices" value="choices-0">
+        <label for="choices-0">Hello</label>
+        <input type="radio" name="choices" value="choices-1">
+        <label for="choices-1">World</label>
+        <input type="radio" name="choices" value="choices-2">
+        <label for="choices-2">Android</label>
+        <input type="radio" name="choices" value="choices-3">
+        <label for="choices-3">Wbsite</label>
+    </div>
+    <div>
+        <button class='btn btn-primary'type="button" name="button">Next</button>
+        <button class='btn btn-primary'type="button" name="button">Previous</button>
+    </div>
+    <div id="quiz-results">
+        <p id='quiz-results-message'></p>
+        <p id='quiz-results-score'></p>
     </div>
   </div>
 </body>

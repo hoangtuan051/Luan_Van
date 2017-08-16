@@ -16,15 +16,13 @@
 }
 
 .tt-query, .tt-hint {
-    width: 396px;
-    height: 30px;
-    padding: 4px 12px;
-    font-size: 24px;
-    line-height: 30px;
-    /*-webkit-border-radius: 8px;
-    -moz-border-radius: 8px;*/
-    outline: none;
-    float: left;
+  float: left;
+  width: 68%;
+  border: none;
+  outline: none;
+  font-size: 24px;
+  font-family: "Times New Roman", Times, serif;
+  display: inline-block;
 }
 
 .tt-menu {
@@ -33,16 +31,21 @@
 }
 
 .tt-dropdown-menu{
-    width: 500px;
-    margin-top: 20px;
+    width: 100%;
+    margin-top: 6px;
     text-align: left;
     padding: 8px 0px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    -webkit-border-radius: 8px;
+    overflow-y: auto;
+    background-color: #f1f2f7;;
+    border-left: 2px solid #054767;
+    border-right: 2px solid #054767;
+    border-bottom: 2px solid #054767;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    /*border: 2px solid rgba(0, 0, 0, 0.2);*/
+    /*-webkit-border-radius: 8px;
     -moz-border-radius: 8px;
-    border-radius: 8px;
+    border-radius: 8px;*/
     -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
@@ -59,7 +62,16 @@
 }
 
 .twitter-typeahead{
-  width: 100%;
+  float: left;
+	width: 68%;
+	border: none;
+	outline: none;
+	border-right: 1px solid;
+	border-radius: 2px;
+	font-size: 24px;
+	font-family: "Times New Roman", Times, serif;
+	display: inline-block;
+	margin-top: 7px;
 }
 
 /*.typehead .tt-menu,

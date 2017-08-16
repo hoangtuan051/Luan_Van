@@ -20,11 +20,11 @@ html
         h1
           span.fa.fa-sign-in
           |  Sign up
-        - var length = message.length
-        // show any messages that come back with authentication
-        - if (length > 0 ){
-          .alert.alert-danger #{message}
-        - }
+        //- - var length = message.length
+        //- // show any messages that come back with authentication
+        //- - if (length > 0 ){
+        //-   .alert.alert-danger #{message}
+        //- - }
         
         // LOGIN FORM
         form#registers(action='/register', method='post', name='register')

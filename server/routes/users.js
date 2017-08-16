@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/sentences', function(req, res, next) {
-  res.render('sentences');
+  res.render('mainpage');
 });
 
 module.exports = router;

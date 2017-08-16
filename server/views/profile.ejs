@@ -43,17 +43,6 @@
               }
           });
 
-          $(function () {
-          var data = ;
-            $('#full_name').val(data.fullname);
-            if(data.email != null)
-                $('#email').val(data.email);
-            if(data.phone != null)
-                $('#phone').val(data.phone);
-            if(data.address != null)
-                $('#address').val(data.address);
-          });
-
           $('ul.sidebar-menu li a').click(function(){
               $('ul.sidebar-menu li a').removeClass("active");
               $(this).addClass("active");
@@ -86,7 +75,7 @@
       <aside>
         <div class="nav-collapse" id="sidebar" tabindex="5000" style="overflow:hidden; outline: none">
           <ul class="sidebar-menu" id="nav-accordion" style="display: block">
-            <li><a class="active" href="/profiles"><i class="fa fa-dashboard"></i>span <%-users.fullname%></a></li>
+            <li><a class="active" href="/profiles"><i class="fa fa-dashboard"></i><%= users.fullname %></a></li>
             <li class="sub-menu dcjq-parent-li"><a class="dcjq-parent" href="javascript:;"><i class="fa fa-user"></i><span>Thông tin</span><span class="dcjq-icon"></span></a>
               <ul class="sub" style="display:none">
                 <li><a href="/profiles">Trang cá nhân</a></li>
@@ -112,7 +101,7 @@
                       <div class="row" style="margin-top:20px">
                         <div class="col-md-9">
                           <div class="input-group"><span class="input-group-addon" id="basic-last_name">Họ tên (*)</span>
-                            <input class="form-control" id="full_name" style="width:100%" type="text" name="full_name" placeholder="Nhập họ tên" value="">
+                            <input class="form-control" id="full_name" style="width:100%" type="text" name="full_name" placeholder="Nhập họ tên" value="<%= users.fullname %>">
                           </div>
                         </div>
                       </div>
@@ -134,7 +123,7 @@
                       <div class="row">
                         <div class="col-md-9" style="margin-top:15px">
                           <div class="input-group"><span class="input-group-addon" id="basic-sex">Email</span>
-                            <input class="form-control" id="email" type="email" name="email" value="">
+                            <input class="form-control" id="email" type="email" name="email" value="<%= users.email%>">
                           </div>
                         </div>
                       </div>

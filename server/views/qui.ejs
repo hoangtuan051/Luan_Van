@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include head %>
+<head>
+  <script src='js/local/mainpage.js', type='text/javascript'></script>
+  <link rel="stylesheet" type="text/css" href="css/local/mainpage.css">
+  <link rel="stylesheet" type="text/css" href="css/local/quiz.css">
+  <title>HomePage</title>
+</head>
+    <% include header %>
+    <body>
+      <div id='wrapper'>
+        <div id="components">
+          <div class="scorepanel">
+            <h2>The word lists</h2>
+            <div class="score">
+                <label>Your score:</label>
+                <div class="val gscore">
+                  100%
+                </div>
+            </div>
+            <div class="stats">
+                <label>Time</label>
+                <div class="val time">
+                    14:30
+                </div>
+            </div>
+          </div>
+          <div class="quizpanel">
+            <div class="title">
+              Complete
+            </div>
+            <div class="formquiz">
+              <button id='playword' type="button" name="button">Play Word</button>
+              <input type="text" name="" value="" id="guessword">
+              <button id='spellit' class="green" type="button" name="button">Spell It!</button>
+            </div>
+            <div class="guesslist clearfloat">
+
+            </div>
+            <div class="action">
+              <button class='red' type="button" name="button">Surrender</button>
+              <button class='green' type="button" name="button">Next Word</button>
+            </div>
+          </div>
+          <div class="defpanel">
+              <h2>Definitions:</h2>
+              <h3 class='diefinition'>
+                <span class='pos pos_n' title="noun">n</span>
+                <span class='def'>a male parent</span>
+              </h3>
+              <h3 class='diefinition'>
+                <span class='pos pos_n' title="noun">n</span>
+                <span class='def'>a male parent</span>
+              </h3>
+              <h3 class='diefinition'>
+                <span class='pos pos_n' title="noun">n</span>
+                <span class='def'>a male parent</span>
+              </h3>
+          </div>
+        </div>
+      </div>
+    </body>

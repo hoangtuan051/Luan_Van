@@ -1,0 +1,107 @@
+<script>
+  var user = <%= users %>
+  alert(user.fullname);
+</script>
+<div class="overlay"></div>
+<header class="myheader">
+      <div class= "mynav">
+      		<div class="logo-container">
+      			<h1 class="logo">
+      			<i class="fa fa-snowflake-o" style="color:#ed8712;" aria-hidden="true"></i>
+      			smart dictionary
+      			</h1>
+      		</div>
+
+      		<!-- <div class="hamburger" id="burger"></div> -->
+          <a class="hamburger" id="burger"><i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+          </a>
+      		<div class="mysidenav">
+
+      			<h1 class="logo-sidenav">
+      				<i class="fa fa-snowflake-o" style="color:#ed8712;"  aria-hidden="true"></i>
+      				smart dictionary
+      			</h1>
+      			<a href="javascript:void(0)" class="myclosebtn">&times;</a>
+  				  <a href="#" class="languageChange">Home</a>
+  				  <a href="#" class="languageChange">Sentence Parsing</a>
+  				  <a href="#" class="languageChange">English Quiz</a>
+			   </div>
+     	 	<nav class="nav-list-left">
+      			<ul >
+        			<li class="active">
+          				<a href="#" class="languageChange">Home</a>
+        			</li>
+        			<li>
+          				<a href="#" class="languageChange">Sentence Parsing</a>
+        			</li>
+        			<li>
+          				<a href="#" class="languageChange">English Quiz</a>
+        			</li>
+        		</ul>
+    		</nav>
+    		<nav class="nav-list-right">
+    			<ul>
+        			<li>
+						    <a id="langOpt" class="myDropdownlist-btn">
+							     <i class="fa fa-globe" aria-hidden="true"></i>
+							     <span>English</span>
+							     <i class="fa fa-angle-down" style="font-size:17px;" aria-hidden="true"></i>
+						    </a>
+          			<ul class="myDropdownlist topnav-ddl">
+            			<li>
+              			<a id="chooseEnglish">
+              			<i class="fa fa-angle-right" aria-hidden="true"></i>
+              			<span>English</span>
+              			</a>
+            			</li>
+            				<li>
+            					<a id="chooseVietnam">
+              					<i class="fa fa-angle-right" aria-hidden="true"></i>
+              					<span>Việt Nam</span>
+              					</a>
+            				</li>
+          			</ul>
+        			</li>
+              <% if(!isAuth) { %>
+        			<li>
+          				<a href="/login" id="alogin">
+          				<i class="fa fa-user" aria-hidden="true"></i>
+          				<span class="languageChange">Login</span></a>
+              </li>
+              <% } else { %>
+
+              <li>
+                  <a id="useric" class="myDropdownlist-btn">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                      <span><%= users.fullname %></span>
+                      <i class="fa fa-angle-down" style="font-size:17px;" aria-hidden="true"></i>
+                  </a>
+
+                  <ul class="myDropdownlist topnav-ddl">
+                  <li>
+                    <a id="wordlists" href="#">
+                    <i class="fa fa-list-ul" aria-hidden="true"></i>
+                    <span>My word lists</span>
+                    </a>
+                  </li>
+
+                  <li>
+                      <a id="profile" href="/profile">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        <span>My profile</span>
+                        </a>
+                  </li>
+                  <li>
+                      <a id="logout" href="/logout">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                        <span>Log out</span>
+                      </a>
+                  </li>
+                  </ul>
+
+        			</li>
+            <% } %>
+        		</ul>
+    		</nav>
+      </div>
+</header>

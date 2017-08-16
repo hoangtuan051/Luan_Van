@@ -1,0 +1,27 @@
+.mycontent {
+  min-height: calc(100vh - 120px);
+}
+.myfooter {
+  height: 120px;
+}
+.logo-font{
+  text-transform: uppercase;
+  font-size: 1.4em;
+  font-family: 'Quicksand', sans-serif;
+}
+.normal-font{
+  font-size: 1.1em;
+  font-family: "Times New Roman", Times, serif;
+}
+.center-footer{
+  text-align: center;
+  margin: 0px auto;
+  display: block;
+  padding-top: 5px;
+}
+footer {
+  margin-top: 60px;
+  background: #1e1e1e;
+  padding: 0 20px;
+  color: #ffffff;
+}

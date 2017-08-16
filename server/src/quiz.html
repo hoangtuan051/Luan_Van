@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Quiz</title>
+
+    <!-- Quiz CSS -->
+    <link href="css/quiz.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/mainpage.css">
+    <link rel="stylesheet" type="text/css" href="css/globalcss.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- Script -->
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/mainpage.js"></script>
+    <script src="js/translate.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myNavbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="/">Smart Dictionary</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a class="english" href="/">Home</a><a class="vietnam" href="/">Trang Chủ</a></li>
+          <li><a class="english" href="/sentences">Sentence Parsing</a><a class="vietnam" href="/sentences">Dịch câu</a></li>
+          <li><a class="english" href="#">Word Lists & Quiz</a><a class="vietnam" href="#">List từ & Quiz</a></li>
+          <li><a class="english" href="#">Word Frequency</a><a class="vietnam" href="#">Độ thông dụng</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" id="lang" type="button" data-toggle="dropdown" aria-expanded="true" style="outline: none;border: none;background-color: #054767;margin: 7px">Languages<span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a onclick="ToEnglish();">English</a></li>
+                <li><a onclick="ToVietNam();">Việt Nam</a></li>
+              </ul>
+            </div>
+          </li>
+          <li id="authenticated" style="display: none">
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" id="user" type="button" data-toggle="dropdown" aria-expanded="true" style="outline: none;border: none;background-color: #054767;margin: 7px"> <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="/profiles"><i class="fa fa-folder-open" aria-hidden="true"> </i> My Lists                                </a></li>
+                <li><a href="/profiles"> <i class="fa fa-user-circle" aria-hidden="true"></i> Profile</a></li>
+                <li><a href="/logout"> <i class="fa fa-circle-o-notch" aria-hidden="true"></i> Logout</a></li>
+              </ul>
+            </div>
+          </li>
+          <li><a class="english" id="eng" href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <li><a class="vietnam" id="vn" href="/login"><span class="glyphicon glyphicon-log-in"></span> Đăng nhập</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="wrapper">
+    <div class="quiz">
+      <h1 id="quiz-name">My quiz</h1>
+      <div class="question">
+        <h2>Các chức năng của website?</h2>
+        <input id="choice-0" type="radio" name="choices" value="choice-0">
+        <label for="choice-0">Chức năng 1</label>
+        <input id="choice-1" type="radio" name="choices" value="choice-1">
+        <label for="choice-1">Chức năng 2</label>
+        <input id="choice-2" type="radio" name="choices" value="choice-2">
+        <label for="choice-2">Chức năng 3</label>
+        <input id="choice-3" type="radio" name="choices" value="choice-3">
+        <label for="choice-3">Chức năng 4</label>
+      </div>
+      <button class='btn btn-primary' id="next" type="button" name="button">Next</button>
+      <button class='btn btn-primary' id="prev" type="button" name="button">Prev</button>
+    </div>
+  </div>
+</body>
+</html>

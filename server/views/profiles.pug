@@ -2,7 +2,7 @@ doctype html
 html
   head
     title Profile
-    link(rel='stylesheet', ,='', type='text/css', href='css/profile.css')
+    link(rel='stylesheet', type='text/css', href='css/profile.css')
     link(href='css/blue.css', rel='stylesheet', type='text/css')
     link(href='css/graphite.css', rel='stylesheet', type='text/css')
     link(href='css/grey.css', rel='stylesheet', type='text/css')
@@ -32,13 +32,13 @@ html
           
             //animation dropdown
           $('.dcjq-parent-li').click(function(){
-              var display =  $('.sub').css("display");
+              var display = $('.sub').css("display");
               if(display!="none"){
-                  $(".sub").attr("style", "display:none");
-                  $('.dcjq-parent-li a.active').removeClass("active");
+                  $(".sub").attr("style", "display:none; transition: 0.5s ease;");
+                  $('.dcjq-parent-li a').removeClass("active");
               }
-              else {
-                  $(".sub").attr("style", "display:block");
+              else {     
+                  $(".sub").attr("style", "display:block; transition: 0.5s ease;");  
                   $('.dcjq-parent-li a').addClass("active");
               }
           });
@@ -97,7 +97,7 @@ html
                 i.fa.fa-user
                 span Thông tin
                 span.dcjq-icon
-              ul.sub(style='display:none;')
+              ul.sub
                 li
                   a(href='/profiles') Trang cá nhân
                 li

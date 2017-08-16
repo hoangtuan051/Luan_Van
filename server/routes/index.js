@@ -32,10 +32,12 @@ var users="";
 
 router.get('/', function(req, res, next) {
   if(req.isAuthenticated()){
-    res.render('mainpage', {users: users});
+    console.log("user(Y): ");
+    res.render('mainpage', {users: req.user, isAuth: true});
   }
   else{
-    res.render('mainpage');
+    console.log("user(N): " + users);
+    res.render('mainpage', {users: req.user, isAuth: false});
   }
 });
 
@@ -46,7 +48,7 @@ router.get('/sentences', function(req, res, next) {
 router.get('/searcheng', function(req, res, next){
   console.log('key ' + req.query.typeahead);
   pool.getConnection(function(err, connection){
-    connection.query('select w.word, w.pos, m.mean, m.example from word w, meaningev m where w.wordid = m.wordid and w.word=' + '"' + req.query.typeahead + '"', function(error, results, fields){
+    connection.query('select w.word, w.pos, m.mean, m.example from wordav w, meaningav m where w.wordid = m.wordid and w.word=' + '"' + req.query.typeahead + '"', function(error, results, fields){
       if(error){
         console.log('query error');
         return;
@@ -57,7 +59,7 @@ router.get('/searcheng', function(req, res, next){
       }
 
       if(results.length > 0)
-          res.render('result', {datadic: results, users: users});
+          res.render('result', {datadic: results, users: req.user, isAuth: true});
       else
           res.render('noresult');
   });
@@ -76,7 +78,7 @@ router.get('/noresult', function(req, res){
 router.get('/searchvie', function(req, res, next){
   console.log("key " + req.query.typeahead);
   pool.getConnection(function(err, connection){
-    connection.query('select v.word , v.pos, m.mean, m.example from meanva m, vaword v where m.wordid = v.wordid and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.query.typeahead + '"' + ', BINARY))', function (error, results, fields) {
+    connection.query('select v.word , v.pos, m.mean, m.example from meaningva m, wordva v where m.wordid = v.wordid and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.query.typeahead + '"' + ', BINARY))', function (error, results, fields) {
       if (error) {
         console.log('Error in the query');
         return;
@@ -98,10 +100,14 @@ router.get('/searchvie', function(req, res, next){
   });
 });
 
+router.get('/doquiz', function(req, res, next){
+  res.render('qui');
+});
+
 router.get('/search', function(req, res, next){
   console.log('test ' + req.query.key);
   pool.getConnection(function(err, connection){
-    connection.query('SELECT word FROM word WHERE word LIKE "%' + req.query.key + '%"', function(error, results, fields){
+    connection.query('SELECT word FROM wordav WHERE word LIKE "' + req.query.key + '%"', function(error, results, fields){
       if(error) throw err;
       var data = [];
       for(var i = 0; i < results.length; i++){
@@ -116,7 +122,7 @@ router.get('/search', function(req, res, next){
 router.get('/suggest', function(req, res, next){
   console.log('test ' + req.query.key);
   pool.getConnection(function(err, connection){
-    connection.query('SELECT word FROM vaword WHERE word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.query.key + '"' + ', BINARY))', function(error, results, fields){
+    connection.query('SELECT word FROM wordva WHERE word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + req.query.key + '"' + ', BINARY))', function(error, results, fields){
       if(error) throw err;
       var data = [];
       for(var i = 0; i < results.length; i++){
@@ -149,7 +155,7 @@ router.post('/word', function(req, res, next){
 
   pool.getConnection(function(err, connection){
     if(checked === false){
-      connection.query('select v.word ,m.mean, m.example, v.pos from meanva m, vaword v where m.wordid = v.id and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + key + '"' + ', BINARY))', function (error, results, fields) {
+      connection.query('select v.word ,m.mean, m.example, v.pos from meaningva m, wordva v where m.wordid = v.id and v.word LIKE CONCAT(' + '"%"' + ', CONVERT(' + '"' + key + '"' + ', BINARY))', function (error, results, fields) {
         if (error) {
           console.log('Error in the query');
           return;
@@ -163,7 +169,7 @@ router.post('/word', function(req, res, next){
       });
     }
     else{
-      connection.query('select w.word, w.pos, m.mean, m.example from word w, meaningev m where w.wordid = m.wordid and w.word=' + '"' + key  + '"', function(error, results, fields){
+      connection.query('select w.word, w.pos, m.mean, m.example from wordav w, meaningav m where w.wordid = m.wordid and w.word=' + '"' + key  + '"', function(error, results, fields){
         if(error){
           console.log('query error');
           return;
@@ -282,20 +288,20 @@ router.get('/searchav', function(req, res, next){
   }
 });
 
-router.get('/profiles', function(req, res){
+router.get('/profile', function(req, res){
   if(req.isAuthenticated()){
-    res.render('profiles', {users: users});
+    res.render('profile', {users: req.user, isAuth: true});
   }
 });
 
 router.post('/updatepass', function(req, res){
-  if(req.isAuthenticated){
+  if(req.isAuthenticated()){
     pool.getConnection(function(err, connection){
         connection.query('SELECT * FROM account where id = ' + users.id, function(err, results, fields){
           var oldpassword = req.body.oldpassword;
           var newpassword = req.body.newpassword;
           if(!bcrypt.compareSync(oldpassword, results[0].password)){
-              res.render('changepassword', {errors: "Please verify your current password.", users: users});
+              res.render('changepassword', {errors: "Please verify your current password.", users: req.user, isAuth: true});
               return;
           }
           newpassword = bcrypt.hashSync(newpassword, null, null);
@@ -303,7 +309,7 @@ router.post('/updatepass', function(req, res){
               if(err){
                   console.log(err);
               }
-              res.render('changepassword', {users: users});
+              res.render('changepassword', {users: req.user});
               return;
           });
         });
@@ -312,9 +318,18 @@ router.post('/updatepass', function(req, res){
   }
 });
 
+router.get('/ch', function(req, res){
+  if(req.isAuthenticated()){
+      console.log(req.user);
+  }
+  else{
+    res.status("404").send("<h1>404.Page not found</h1>");
+  }
+});
+
 router.get('/changepassword', function(req, res){
   if(req.isAuthenticated()){
-    res.render('changepassword', {users: users});
+    res.render('changepassword', {users: req.user});
   }
 });
 
@@ -325,7 +340,7 @@ router.get('/login', function(req, res) {
 
 router.get('/success', function(req, res){
   if(req.isAuthenticated()){
-    res.render('success', {users: users});
+    res.render('success', {users: req.user});
   }
   else{
     res.send("chua login");
@@ -429,9 +444,9 @@ router.get('/auth/google/callback',
 );
 
 router.get('/profile', isLoggedIn, function(req, res) {
-  users = req.user;
+  //users = req.user;
   res.render('mainpage', {
-    users : req.user // get the user out of session and pass to template
+    users : req.user, isAuth: true // get the user out of session and pass to template
   });
 });
 

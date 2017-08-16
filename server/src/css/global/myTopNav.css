@@ -1,0 +1,255 @@
+.myDropdownlist{}/*abstract*/
+.myDropdownlist-btn{}/*abstract*/
+.myheader {
+  height: 60px;
+  background: #262626;
+  font-family: 'Quicksand', sans-serif;
+}
+.mynav {
+  width: 100%;
+  position: relative;
+}
+
+.logo { 
+  float: left;
+  margin-left: 5px;
+  text-transform: uppercase;
+  font-size: 1.4em;
+  font-family: 'Quicksand', sans-serif;
+  color: #ffffff;
+}
+/*left nav*/
+.nav-list-left{
+	float: left;
+	margin-left: 30px;
+}
+
+.nav-list-left ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-list-left ul li {
+  float: left;
+  position: relative;
+}
+.nav-list-left ul li a{
+  display: block;
+  padding: 0 20px;
+  line-height: 60px;
+  background: #262626;
+  color: #c1c1ba;
+  text-decoration: none;
+}
+.nav-list-left ul li a:hover{
+  background: #7c7c75;
+}
+
+.nav-list-left ul li.active a{
+    font-weight: bold;
+    border-top: 4px solid #002aff;
+    line-height: 56px;
+    color: #ffffff;
+}
+
+/*right-nav*/
+.nav-list-right{
+	float: right;
+  position: relative;
+}
+.nav-list-right ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-list-right ul li {
+  float: right;
+}
+.nav-list-right ul li a{
+  display: block;
+  padding: 0 20px;
+  line-height: 60px;
+  background: #262626;
+  color: #c1c1ba;
+  text-decoration: none;
+}
+.nav-list-right ul li a:hover{
+  color: white;
+}
+/*choose language*/
+#langOpt{
+  cursor: pointer;
+  padding-left:0px;
+}
+#langOpt i.fa.fa-globe{
+  border-left: 1px solid white;
+  padding-left: 20px;
+}
+/*login top right button*/
+#alogin{
+  padding-right:30px;
+  padding-left: 30px;
+}
+#useric{
+  padding-right:30px;
+  padding-left: 30px;
+  cursor: pointer;
+}
+
+/*top right drop down list*/
+.myDropdownlist.topnav-ddl {
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+.myDropdownlist.topnav-ddl li{
+	float: left !important;
+  text-align: left;
+	width: 100%;
+}
+.myDropdownlist.topnav-ddl li a{
+  background-color: #e6e8ed !important;
+  color: black !important;
+  line-height: 30px !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+.myDropdownlist.topnav-ddl li a:hover{
+	background-color: #d7dae0 !important;
+}
+
+/*hamburger button*/
+.hamburger{
+  float:left;
+  margin-left:10px;
+  margin-top: 15px;
+  color: white;
+  display:none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/*left sive nav*/
+.mysidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: #e6e8ed;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    display: none;
+    padding-top: 100px;
+    text-align: left !important;
+}
+
+.mysidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 1.4em;
+    color: black;
+    display: block;
+    transition: 0.3s;
+    border-top: 1px solid #cfd1e8;
+    font-family: "Times New Roman", Times, serif;
+
+}
+
+.mysidenav a:hover{
+    color: #2d2d2a;
+    background-color: #d9e2e0;
+}
+
+.mysidenav .myclosebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    cursor: pointer;
+    background-color: #e6e8ed !important;
+}
+
+.logo-sidenav{
+	  position: absolute;
+    top: 0;
+    left: 5px;
+    margin-right: 40px;
+    text-transform: uppercase;
+  	font-size: 1.7em;
+  	font-family: "Times New Roman", Times, serif;
+  	color: black;
+}
+
+
+@media screen and (max-width: 910px) {
+  .nav-list-left {/*remove left top nav*/
+    display: none;
+  }
+  .hamburger{/*display burger button*/
+    display: inline;
+  }
+  .mysidenav{/*display side nav button*/
+  	display: block;
+  }
+  #alogin span,#langOpt span,#useric span{/*remove top right label*/
+    display: none;
+  }
+  /*prevent from improper indentation*/
+  #langOpt{
+    padding-right: 30px;
+  }
+  #langOpt i.fa.fa-globe{
+    padding-left: 30px;
+  }
+  .myDropdownlist.topnav-ddl li a{
+    padding-left: 10px !important;
+    padding-right: 0px !important;
+  }
+  /*center logo*/
+  .logo{
+    margin-left: 0px;
+  }
+  .logo-container{
+	display: inline-block;
+  }
+  .mynav{
+	text-align: center;
+  }
+  /* prevent from scrolling*/
+  .overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: black;
+  opacity: 0.5;
+  display: none;
+  }
+  .stopScrolling{
+  overflow-y: hidden;
+  }
+
+}
+
+
+@media screen and (max-width: 480px) {
+	.logo{
+    font-size: 1.1em;
+  	}
+}
+
+.scrollToTop{
+  text-align: center;
+  padding: 0px 0px;
+  text-decoration: none;
+  position:fixed;
+  bottom:75px;
+  right:40px;
+  display:none;
+}

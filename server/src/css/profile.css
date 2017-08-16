@@ -63,6 +63,7 @@ a, a:hover, a:focus {
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
+    transition: all 0.5s ease;
     position:absolute;
     right:10px;
     top:15px;
@@ -72,6 +73,7 @@ a, a:hover, a:focus {
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
+    transition: all 0.5s ease;
 }
 
 .nav-collapse.collapse {
@@ -81,6 +83,14 @@ a, a:hover, a:focus {
 ul.sidebar-menu , ul.sidebar-menu li ul.sub{
     margin: -2px 0 0;
     padding: 0;
+}
+
+ul.sidebar-menu li.sub-menu{
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 ul.sidebar-menu {
@@ -112,21 +122,21 @@ ul.sidebar-menu li ul.sub li a {
     padding: 6px 0;
     line-height: 35px;
     height: 35px;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
     color: #aeb2b7;
 }
 
 ul.sidebar-menu li ul.sub li a:hover, ul.sidebar-menu li ul.sub li.active a {
     color: #FF6C60;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
     display: block;
 }
 
@@ -165,11 +175,11 @@ ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:fo
     display: block;
     border-radius: 4px;
     -webkit-border-radius: 4px;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 
@@ -520,6 +530,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 
 .go-top i {
     color: #2A3542;
+    transition: all 0.5s ease;
 }
 
 .site-min-height {

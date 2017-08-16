@@ -30,7 +30,7 @@ html(lang='en')
               var optionSelected = $(this).find("option:selected");
               var textSelected = optionSelected.text();
               if(textSelected === "English"){
-                  alert("anh");
+                  console.log("anh");
                   $('.typeahead').typeahead('destroy');
                   $('.typeahead').typeahead({
                       name: 'vocc',
@@ -40,7 +40,7 @@ html(lang='en')
                   });
               }
             else {
-              alert("viet");
+              console.log("viet");
               $('.typeahead').typeahead('destroy');
               $('.typeahead').typeahead({
                   name: 'voc',
@@ -196,7 +196,7 @@ html(lang='en')
                 span.searchselect
                   button.searchbutton(type='submit', value='submit')
                     i.fa.fa-search(aria-hidden='true')
-                  select.searchoption
+                  select.searchoption(name='typedic')
                     option(value='English', selected='selected') English
                     option(value='Vietnam') Viet Nam
       .meanings
